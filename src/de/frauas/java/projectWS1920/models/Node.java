@@ -11,11 +11,16 @@ public class Node {
     // todo: which kind of map should we use?
     Map<Node, Integer> adjacentNodes = new HashMap<>();
 
+    // todo: also what kind of map? -> should be able to justify in presentation
+    Map<Node, Integer> shortestPaths = new HashMap<>();
+
     // constructor with only nodeId. Adjacent nodes can be added later
     // (have to wait until all nodes exist before adjacent nodes can be added)
     public Node(int nodeId) {
         this.nodeId = nodeId;
     }
+
+    public int getNodeId() { return this.nodeId; }
 
     // this method is called by Graph.setAdjacentNodes
     public void addAdjacent(Node node, int weight) {
@@ -24,5 +29,19 @@ public class Node {
 
     public Map<Node, Integer> getAdjacentNodes() {
         return adjacentNodes;
+    }
+
+    public int getShortestPathTo(Node destinationNode) {
+        return this.shortestPaths.get(destinationNode);
+    }
+
+    //for dijkstra, called by calculateShortestPaths in graph to initialise shortestPaths
+    public void addShortestPath(Node destinationNode, int pathLength) {
+        this.shortestPaths.put(destinationNode, pathLength);
+    }
+
+    //
+    public void updateShortestPath(Node destinationNode, int pathLength) {
+        this.shortestPaths.put(destinationNode, pathLength);
     }
 }
