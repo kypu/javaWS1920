@@ -4,6 +4,10 @@ import de.frauas.java.projectWS1920.models.Edge;
 import de.frauas.java.projectWS1920.models.Graph;
 import de.frauas.java.projectWS1920.models.Node;
 
+import java.util.Random;
+import java.util.List;
+
+
 public class MockData {
 
     public static Graph createMockGraph() {
@@ -38,4 +42,54 @@ public class MockData {
         return mockGraph;
     }
 
+
+
+    public static Graph createMockGraph(int numOfNodes) {
+
+        int maxEdges=numOfNodes*(numOfNodes-1)/2;
+
+        // The mock graph looks like this: NODE1--edge13--NODE2--edge15--NODE3
+        // We can add more nodes and edges to make it more complicated
+
+        Graph mockGraph = new Graph();
+
+        //create number of nodes as required and add them into the graph
+        for(int i=1;i<=numOfNodes;i++) {
+            Node aNode = new Node(i);
+            mockGraph.addNode(aNode);
+        }
+
+        List<Node> nodesList = mockGraph.getNodes();
+        //create max number of edges based on the number of nodes
+        //getRandomNumberInRange auto generate whole number between the first parameter to the second parameter
+        for(int i=0;i<getRandomNumberInRange(0,maxEdges);i++) {
+            int idNode1 = getRandomNumberInRange(1,maxEdges);
+            int idNode2 = getRandomNumberInRange(1,maxEdges);
+            //if the both of the Nodes are the same, then generate new one
+            while(idNode1==idNode2) {
+                idNode2 = getRandomNumberInRange(1,maxEdges);
+            }
+            Edge aEdge = new Edge(i,nodesList.get(idNode1),nodesList.get(idNode2),getRandomNumberInRange(1,100));
+            //add Edge to the graph
+            mockGraph.addEdge(aEdge);
+        }
+
+        mockGraph.setAdjacentNodes();
+
+        return mockGraph;
+    }
+
+
+    private static int getRandomNumberInRange(int min, int max) {
+
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
+    }
+
 }
+
+
