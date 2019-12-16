@@ -1,6 +1,10 @@
 package de.frauas.java.projectWS1920.models;
 
+import java.util.Map;
+
 public class Edge {
+
+
 
     int edgeId;
     Node originNode;
@@ -16,6 +20,9 @@ public class Edge {
 
     }
 
+    public int getEdgeId() {
+        return edgeId;
+    }
     public Node getOriginNode() {
         return originNode;
     }
@@ -28,4 +35,10 @@ public class Edge {
         return weight;
     }
 
+    public void print(){
+        System.out.println("Edge: "+ edgeId);
+        System.out.println("Weight: "+weight);
+        System.out.println("Edge between Node"+originNode.getNodeId()+" and Node"+destinationNode.getNodeId());
+
+    }
 }
