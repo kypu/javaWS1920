@@ -24,9 +24,6 @@ public class Graph {
         return edges;
     }
 
-
-
-
     public void addNode(Node newNode) {
         this.nodes.add(newNode);
     }
@@ -74,7 +71,7 @@ public class Graph {
             unfinalised.remove(nodeInProgress);
         }
     }
-        
+
 
     // can be private because only called from Graph.calculateShortestPaths
     private void initialiseShortestPaths(Node originNode) {
@@ -103,3 +100,4 @@ public class Graph {
         return NodeWithSmallestShortestPath;
     }
 }
+
