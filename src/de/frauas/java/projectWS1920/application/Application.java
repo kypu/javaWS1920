@@ -1,5 +1,6 @@
 package de.frauas.java.projectWS1920.application;
 
+import de.frauas.java.projectWS1920.models.Edge;
 import de.frauas.java.projectWS1920.models.Graph;
 import de.frauas.java.projectWS1920.models.Node;
 
@@ -8,18 +9,21 @@ public class Application {
     public static void main(String[] args) {
 
         // load mock data to test before we finish parsing the graph
-        Graph mockGraph = MockData.createMockGraph(5);
-        System.out.println("Node 1's neighbours: " + mockGraph.getNodes().get(0).getAdjacentNodes());
+        Graph mockGraph = MockData.createRandomMockGraph(10);
         // test the dijkstra implementation
-        /*Node testOriginNode = mockGraph.getNodeById(1);
+        Node testOriginNode = mockGraph.getNodeById(1);
         mockGraph.calculateShortestPathsFrom(testOriginNode);
-
-
         for (Node node : mockGraph.getNodes()) {
-            System.out.println("Shortest path from " + testOriginNode.getNodeId() + " to " + node.getNodeId() + " is " +
-                    testOriginNode.getShortestPathTo(node));
+            int pathLength = testOriginNode.getShortestPathLengthTo(node);
+            if (pathLength == Integer.MAX_VALUE) {
+                System.out.println(testOriginNode.toString() + " and " + node.toString() + " are not connected.");
+            } else {
+                System.out.println("Shortest path from " + testOriginNode.getNodeId() + " to " + node.getNodeId() + " is " +
+                        testOriginNode.getShortestPathLengthTo(node));
+                System.out.println("Directions: " + testOriginNode.getShortestPathDirectionsTo(node));
+            }
         }
-*/
+
         // 1. output number of nodes
         System.out.println("----Number of nodes: " + mockGraph.getNodes().size());
 
@@ -28,15 +32,16 @@ public class Application {
         // 3. output node IDs
         //#print out each nodes and its neighbors
         System.out.println("---------------NODE INFO---------------------");
-        for(int i=0;i<mockGraph.getNodes().size();i++){
-            mockGraph.getNodes().get(i).print();
+
+        for(Node node : mockGraph.getNodes()){
+            node.print();
             System.out.println("---");
         }
 
         // 4. output edge IDs
         System.out.println("---------------EDGE INFO---------------------");
-        for(int i=0;i<mockGraph.getEdges().size();i++){
-            mockGraph.getEdges().get(i).print();
+        for(Edge edge : mockGraph.getEdges()){
+            edge.print();
             System.out.println("---");
         }
         // 5. is the graph connected?
