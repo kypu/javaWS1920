@@ -44,4 +44,15 @@ public class Node {
     public void updateShortestPath(Node destinationNode, int pathLength) {
         this.shortestPaths.put(destinationNode, pathLength);
     }
+
+    public void print(){
+        System.out.println("Node: "+ nodeId);
+        System.out.println("_Neighbors_");
+        for (Map.Entry<Node, Integer> nodeEntry: adjacentNodes.entrySet()
+             ) {
+            System.out.println("Node: "+ nodeEntry.getKey().getNodeId() + " Weight: "+ nodeEntry.getValue());
+        }
+    }
 }
+
+
