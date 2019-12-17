@@ -4,43 +4,30 @@ import de.frauas.java.projectWS1920.models.Edge;
 import de.frauas.java.projectWS1920.models.Graph;
 import de.frauas.java.projectWS1920.models.Node;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class MockData {
 
-
-    public static Graph createMockGraph() {
-
-        // The mock graph looks like this: NODE1--edge13--NODE2--edge15--NODE3
-        // We can add more nodes and edges to make it more complicated
-
-        Graph mockGraph = new Graph();
-
-
+    public static Graph createMockGraphOriginUnconnected() {
         Node node1 = new Node(1);
         Node node2 = new Node(2);
         Node node3 = new Node(3);
+        Node node4 = new Node(4);
+        Node node5 = new Node(5);
+        Edge edge1 = new Edge(1, node2, node4, 53);
 
-        Edge edge1 = new Edge(1, node1, node2, 13);
-        Edge edge2 = new Edge(2, node2, node3, 15);
-
+        Graph mockGraph = new Graph();
         mockGraph.addNode(node1);
         mockGraph.addNode(node2);
         mockGraph.addNode(node3);
-
+        mockGraph.addNode(node4);
+        mockGraph.addNode(node5);
         mockGraph.addEdge(edge1);
-        mockGraph.addEdge(edge2);
-
-        mockGraph.setAdjacentNodes();
 
         return mockGraph;
     }
 
-
-    public static Graph createMockGraph(int numOfNodes) {
+    public static Graph createRandomMockGraph(int numOfNodes) {
 
         int maxEdges=numOfNodes*(numOfNodes-1)/2;
         HashSet<Tuple> existedEdgeSet = new HashSet<Tuple>(); // storing Tuples of Nodes, where Edges are already created
@@ -52,14 +39,16 @@ public class MockData {
             mockGraph.addNode(aNode);
         }
 
-        List<Node> nodesList = mockGraph.getNodes();
+        // nodes as a list instead of a set here because need to access specific elements
+        List<Node> nodesList = new ArrayList<>();
+        nodesList.addAll(mockGraph.getNodes());
         //create max number of edges based on the number of nodes
         //getRandomNumberInRange auto generate whole number between the first parameter to the second parameter
         int numOfRandomEdges = getRandomNumberInRange(0,maxEdges);
-
+        //template for random generation
         Node node1 =null;
         Node node2 = null;
-        Edge aEdge = null;
+        Edge randomEdge = null;
         for(int i=0;i<numOfRandomEdges;i++) {
             do{
                 int idNode1 = getRandomNumberInRange(0, numOfNodes - 1);
@@ -71,10 +60,10 @@ public class MockData {
                 node1 = nodesList.get(idNode1);
                 node2 = nodesList.get(idNode2);
 
-                aEdge = new Edge(i,node1,node2,getRandomNumberInRange(1,100)); //add Edge to the graph
+                randomEdge = new Edge(i,node1,node2,getRandomNumberInRange(1,100)); //add Edge to the graph
             }while(existedEdgeSet.add(new Tuple(node1, node2))==false);
 
-           mockGraph.addEdge(aEdge);
+           mockGraph.addEdge(randomEdge);
         }
 
         mockGraph.setAdjacentNodes();

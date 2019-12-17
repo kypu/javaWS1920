@@ -6,10 +6,10 @@ public class Edge {
 
 
 
-    int edgeId;
-    Node originNode;
-    Node destinationNode;
-    int weight;
+    private int edgeId;
+    private Node originNode;
+    private Node destinationNode;
+    private int weight;
 
     public Edge(int edgeId, Node originNode, Node destinationNode, int weight) {
 
