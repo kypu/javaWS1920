@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 public class Application {
-    private static final String filepath = "/Users/saman/Documents/git/javaWS1920/src/de/frauas/java/projectWS1920/application/small_graph.graphml";
+    private static final String filepath = "/Users/saman/Documents/git/javaWS1920/src/de/frauas/java/projectWS1920/models/small_graph.graphml";
 
     public static void main(String[] args) throws Exception {
 
@@ -43,25 +43,21 @@ public class Application {
         Iterable<Edge> edges=graph.getEdges();
 
 
-        System.out.println(graph.toString());
-        System.out.println(vertices.toString());
-        System.out.println(edges.toString());
+        //System.out.println(graph.toString());
+        //System.out.println(vertices.toString());
+        //System.out.println(edges.toString());
 
 
-        /*
+
         for(Vertex v : vertices){
             System.out.println(v.toString().substring(2, v.toString().length()-1));
         }
 
 
         for(Edge e : edges){
-            System.out.println(e.toString());
-        }
-
-        for(Edge e : edges){
             System.out.println(e.toString().substring(2, e.toString().length()-9));
         }
-
+        /*
         String[] items = edges.toString().substring(1, edges.toString().length() - 1).split("\\]?\\[");
         System.out.println(items[0]);
         System.out.println(items[1]);
