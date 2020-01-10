@@ -3,21 +3,16 @@ package de.frauas.java.projectWS1920.models;
 import java.util.Map;
 
 public class Edge {
-
-
-
     private int edgeId;
     private Node originNode;
     private Node destinationNode;
     private int weight;
 
     public Edge(int edgeId, Node originNode, Node destinationNode, int weight) {
-
         this.edgeId = edgeId;
         this.originNode = originNode;
         this.destinationNode = destinationNode;
         this.weight = weight;
-
     }
 
     public int getEdgeId() {
@@ -26,11 +21,9 @@ public class Edge {
     public Node getOriginNode() {
         return originNode;
     }
-
     public Node getDestinationNode() {
         return destinationNode;
     }
-
     public int getWeight() {
         return weight;
     }

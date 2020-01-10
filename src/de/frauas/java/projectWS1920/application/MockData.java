@@ -1,17 +1,17 @@
 package de.frauas.java.projectWS1920.application;
 
-/*
+
 import de.frauas.java.projectWS1920.models.Edge;
 import de.frauas.java.projectWS1920.models.Graph;
 import de.frauas.java.projectWS1920.models.Node;
 
 import java.util.*;
-*/
+
 
 
 
 public class MockData {
-/*
+
     public static Graph createMockGraphOriginUnconnected() {
         Node node1 = new Node(1);
         Node node2 = new Node(2);
@@ -111,5 +111,5 @@ public class MockData {
          }
      }
 
- */
+
 }
