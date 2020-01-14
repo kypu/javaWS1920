@@ -6,25 +6,16 @@ package de.frauas.java.projectWS1920.application;
 //import de.frauas.java.projectWS1920.models.Graph;
 //import de.frauas.java.projectWS1920.models.Node;
 
-import com.tinkerpop.blueprints.Edge;
-import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
-import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
-import com.tinkerpop.blueprints.Direction;
 import de.frauas.java.projectWS1920.Dao.GraphML;
-import de.frauas.java.projectWS1920.models.Graph;
+import de.frauas.java.projectWS1920.models.MyGraph;
 import de.frauas.java.projectWS1920.resources.Resource;
-
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 
 public class Application
 {
     public static void main(String[] args) throws Exception
     {
-        Graph readInGraph = GraphML.importData(Resource.getFilepath() + "small_graph.graphml");
+        MyGraph readInGraph = GraphML.importData(Resource.getFilepath() + "small_graph.graphml");
         Boolean didItWork = GraphML.exportData(Resource.getFilepath() + "attempt.graphml", readInGraph);
         if (didItWork) System.out.println("Success!");
 

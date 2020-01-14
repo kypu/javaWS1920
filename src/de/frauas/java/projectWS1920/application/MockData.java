@@ -1,9 +1,9 @@
 package de.frauas.java.projectWS1920.application;
 
 
-import de.frauas.java.projectWS1920.models.Edge;
-import de.frauas.java.projectWS1920.models.Graph;
-import de.frauas.java.projectWS1920.models.Node;
+import de.frauas.java.projectWS1920.models.MyEdge;
+import de.frauas.java.projectWS1920.models.MyGraph;
+import de.frauas.java.projectWS1920.models.MyNode;
 
 import java.util.*;
 
@@ -12,15 +12,15 @@ import java.util.*;
 
 public class MockData {
 
-    public static Graph createMockGraphOriginUnconnected() {
-        Node node1 = new Node(1);
-        Node node2 = new Node(2);
-        Node node3 = new Node(3);
-        Node node4 = new Node(4);
-        Node node5 = new Node(5);
-        Edge edge1 = new Edge(1, node2, node4, 53);
+    public static MyGraph createMockGraphOriginUnconnected() {
+        MyNode node1 = new MyNode(1);
+        MyNode node2 = new MyNode(2);
+        MyNode node3 = new MyNode(3);
+        MyNode node4 = new MyNode(4);
+        MyNode node5 = new MyNode(5);
+        MyEdge edge1 = new MyEdge(1, node2, node4, 53);
 
-        Graph mockGraph = new Graph();
+        MyGraph mockGraph = new MyGraph();
         mockGraph.addNode(node1);
         mockGraph.addNode(node2);
         mockGraph.addNode(node3);
@@ -31,28 +31,28 @@ public class MockData {
         return mockGraph;
     }
 
-    public static Graph createRandomMockGraph(int numOfNodes) {
+    public static MyGraph createRandomMockGraph(int numOfNodes) {
 
         int maxEdges=numOfNodes*(numOfNodes-1)/2;
         HashSet<Tuple> existedEdgeSet = new HashSet<Tuple>(); // storing Tuples of Nodes, where Edges are already created
-        Graph mockGraph = new Graph();
+        MyGraph mockGraph = new MyGraph();
 
         //create number of nodes as required and add them into the graph
         for(int i=1;i<=numOfNodes;i++) {
-            Node aNode = new Node(i);
+            MyNode aNode = new MyNode(i);
             mockGraph.addNode(aNode);
         }
 
         // nodes as a list instead of a set here because need to access specific elements
-        List<Node> nodesList = new ArrayList<>();
+        List<MyNode> nodesList = new ArrayList<>();
         nodesList.addAll(mockGraph.getNodes());
         //create max number of edges based on the number of nodes
         //getRandomNumberInRange auto generate whole number between the first parameter to the second parameter
         int numOfRandomEdges = getRandomNumberInRange(0,maxEdges);
         //template for random generation
-        Node node1 =null;
-        Node node2 = null;
-        Edge randomEdge = null;
+        MyNode node1 =null;
+        MyNode node2 = null;
+        MyEdge randomEdge = null;
         for(int i=0;i<numOfRandomEdges;i++) {
             do{
                 int idNode1 = getRandomNumberInRange(0, numOfNodes - 1);
@@ -64,7 +64,7 @@ public class MockData {
                 node1 = nodesList.get(idNode1);
                 node2 = nodesList.get(idNode2);
 
-                randomEdge = new Edge(i,node1,node2,getRandomNumberInRange(1,100)); //add Edge to the graph
+                randomEdge = new MyEdge(i,node1,node2,getRandomNumberInRange(1,100)); //add Edge to the graph
             }while(existedEdgeSet.add(new Tuple(node1, node2))==false);
 
            mockGraph.addEdge(randomEdge);
@@ -86,10 +86,10 @@ public class MockData {
         return r.nextInt((max - min) + 1) + min;
     }
      static class Tuple{
-        private Node node1;
-        private Node node2;
+        private MyNode node1;
+        private MyNode node2;
 
-        Tuple(Node node1, Node node2){
+        Tuple(MyNode node1, MyNode node2){
             this.node1=node1;
             this.node2=node2;
         }

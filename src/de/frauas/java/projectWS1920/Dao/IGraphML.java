@@ -1,16 +1,16 @@
 package de.frauas.java.projectWS1920.Dao;
 
-import de.frauas.java.projectWS1920.models.Edge;
-import de.frauas.java.projectWS1920.models.Graph;
-import de.frauas.java.projectWS1920.models.Node;
+import de.frauas.java.projectWS1920.models.MyEdge;
+import de.frauas.java.projectWS1920.models.MyGraph;
+import de.frauas.java.projectWS1920.models.MyNode;
 
 import java.io.InputStream;
 
 public interface IGraphML<N, E>
 {
     InputStream createInputStream(String p);
-    Iterable<Node> parseNodes(N n);
-    Iterable<Edge> parseEdges(E e);
-    Graph importData();
+    Iterable<MyNode> parseNodes(N n);
+    Iterable<MyEdge> parseEdges(E e);
+    MyGraph importData();
     void exportData();
 }

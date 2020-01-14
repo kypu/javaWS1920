@@ -5,46 +5,46 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Node {
+public class MyNode {
 
     private int nodeId;
     // key is an adjacent node, value is the weight of connecting edge
-    private HashMap<Node, Integer> adjacentNodes = new HashMap<>();
+    private HashMap<MyNode, Integer> adjacentNodes = new HashMap<>();
     // key is a connected node, value is the length of the path
-    private HashMap<Node, Integer> shortestPaths = new HashMap<>();
+    private HashMap<MyNode, Integer> shortestPaths = new HashMap<>();
     // key is a connected node, value is the previous node
-    private HashMap<Node, Node> previousNodes = new HashMap<>();
+    private HashMap<MyNode, MyNode> previousNodes = new HashMap<>();
 
-    public Node(int nodeId) {
+    public MyNode(int nodeId) {
         this.nodeId = nodeId;
     }
 
     public int getNodeId() { return this.nodeId; }
 
-    public void addAdjacent(Node node, int weight) {
+    public void addAdjacent(MyNode node, int weight) {
         this.adjacentNodes.put(node, weight);
     }
 
-    public Map<Node, Integer> getAdjacentNodes() {
+    public Map<MyNode, Integer> getAdjacentNodes() {
         return adjacentNodes;
     }
 
-    public Map<Node, Integer> getShortestPaths() {
+    public Map<MyNode, Integer> getShortestPaths() {
         return shortestPaths;
     }
 
-    public int getShortestPathLengthTo(Node destinationNode) {
+    public int getShortestPathLengthTo(MyNode destinationNode) {
         return this.shortestPaths.get(destinationNode);
     }
 
     // linked for adding nodes at the beginning
-    public LinkedList<Node> getShortestPathDirectionsTo(Node destinationNode) {
-        LinkedList<Node> directions = new LinkedList<>();
+    public LinkedList<MyNode> getShortestPathDirectionsTo(MyNode destinationNode) {
+        LinkedList<MyNode> directions = new LinkedList<>();
         directions.add(destinationNode);
         if (destinationNode.equals(this)) {
             return directions;
         }
-        Node previousNode = this.previousNodes.get(destinationNode);
+        MyNode previousNode = this.previousNodes.get(destinationNode);
         do {
             directions.addFirst(previousNode);
             destinationNode = previousNode;
@@ -53,19 +53,19 @@ public class Node {
         return directions;
     }
 
-    public void updateShortestPath(Node destinationNode, int pathLength) {
+    public void updateShortestPath(MyNode destinationNode, int pathLength) {
         this.shortestPaths.put(destinationNode, pathLength);
     }
 
-    public void addCurrentPreviousNodePair(Node currentNode, Node previousNode) {
+    public void addCurrentPreviousNodePair(MyNode currentNode, MyNode previousNode) {
         this.previousNodes.put(currentNode, previousNode);
     }
 
     public void print(){
         System.out.println("Node: "+ nodeId);
         System.out.println("_Neighbors_");
-        for (Map.Entry<Node, Integer> nodeEntry: adjacentNodes.entrySet()
-             ) {
+        for (Map.Entry<MyNode, Integer> nodeEntry: adjacentNodes.entrySet()
+        ) {
             System.out.println("Node: "+ nodeEntry.getKey().getNodeId() + " Weight: "+ nodeEntry.getValue());
         }
     }
