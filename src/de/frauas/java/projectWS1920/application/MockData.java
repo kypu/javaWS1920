@@ -1,10 +1,14 @@
 package de.frauas.java.projectWS1920.application;
 
+
 import de.frauas.java.projectWS1920.models.Edge;
 import de.frauas.java.projectWS1920.models.Graph;
 import de.frauas.java.projectWS1920.models.Node;
 
 import java.util.*;
+
+
+
 
 public class MockData {
 
@@ -106,4 +110,6 @@ public class MockData {
              return Objects.hash(node1)+Objects.hash(node2);
          }
      }
+
+
 }
