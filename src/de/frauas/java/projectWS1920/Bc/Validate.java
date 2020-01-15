@@ -19,7 +19,7 @@ public class Validate
 
         } catch (InvalidPathException ex)
         {
-            return false;
+            throw ex;
         }
         return true;
     }

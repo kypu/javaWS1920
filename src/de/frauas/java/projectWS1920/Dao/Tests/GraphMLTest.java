@@ -96,6 +96,12 @@ class GraphMLTest
         assertEquals(exampleEdge.getDestinationNode().getNodeId(), testeeEdge.getDestinationNode().getNodeId());
     }
 
+    /**
+     *
+     * @param graph Graph that's being searched.
+     * @param edgeId Edge id you're looking for.
+     * @return Edge with the id you're looking for in given graph. If not found, returns null.
+     */
     @Nullable
     private MyEdge getEdgeByIdHelper(MyGraph graph, Integer edgeId)
     {
