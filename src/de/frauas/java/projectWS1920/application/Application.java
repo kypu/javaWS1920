@@ -8,6 +8,7 @@ package de.frauas.java.projectWS1920.application;
 
 import de.frauas.java.projectWS1920.Dao.GraphML;
 import de.frauas.java.projectWS1920.models.MyGraph;
+import de.frauas.java.projectWS1920.models.MyNode;
 import de.frauas.java.projectWS1920.resources.Resource;
 
 
@@ -18,6 +19,10 @@ public class Application
         MyGraph readInGraph = GraphML.importData(Resource.getFilepath() + "small_graph.graphml");
         Boolean didItWork = GraphML.exportData(Resource.getFilepath() + "attempt.graphml", readInGraph);
         if (didItWork) System.out.println("Success!");
+
+        for (MyNode node : readInGraph.getNodes()) {
+            System.out.println("Betweenness Centrality of Node " + node.getNodeId() + " is: " + readInGraph.calculateBetweennessCentralityOf(node));
+        }
 
         //Will be used later
         /*

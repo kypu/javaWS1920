@@ -133,21 +133,28 @@ public class MyGraph {
      * @return the betweenness centrality
      */
     public double calculateBetweennessCentralityOf(MyNode centralNode) {
+        setAdjacentNodes();
         double betweennessCentrality = 0.0;
         // todo: all shortest paths could be calculated once per graph at the very beginning (using threads?)
         for (MyNode originNode : this.nodes) {
-            if (!originNode.equals(centralNode))
-                calculateShortestPathsFrom(originNode);
+            if (originNode.equals(centralNode)) {
+                break;
+            }
+            calculateShortestPathsFrom(originNode);
             //only check the destination nodes which are connected because
             // unconnected nodes add 0 to the betweenness centrality and otherwise we divide by 0
             for (MyNode destinationNode : this.nodes) {
-                if (!destinationNode.equals(centralNode) && !destinationNode.equals(originNode) &&
-                        (originNode.getShortestPathLengthTo(destinationNode)!=Integer.MAX_VALUE)) {
+                if (destinationNode.equals(centralNode) || destinationNode.equals(originNode) ||
+                        (originNode.getShortestPathLengthTo(destinationNode) == Integer.MAX_VALUE)) {
+                    break;
+                }
+                else {
                     // todo: also calculate all directions in the thread
                     originNode.calculateDirectionsTo(destinationNode);
                     betweennessCentrality +=
                             (countPathsIncluding(originNode, destinationNode, centralNode) /
-                                    countPaths(originNode, destinationNode)); }
+                                    countPaths(originNode, destinationNode));
+                }
             }
         }
         return betweennessCentrality;
