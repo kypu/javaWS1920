@@ -2,7 +2,6 @@ package de.frauas.java.projectWS1920.models;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class MyNode {
@@ -11,71 +10,134 @@ public class MyNode {
     // key is an adjacent node, value is the weight of connecting edge
     private HashMap<MyNode, Integer> adjacentNodes = new HashMap<>();
     // key is a connected node, value is the length of the path
-    private HashMap<MyNode, Integer> shortestPaths = new HashMap<>();
-    // key is a connected node, value is the previous node
-    private HashMap<MyNode, MyNode> previousNodes = new HashMap<>();
+    private HashMap<MyNode, Integer> shortestPathLengths = new HashMap<MyNode, Integer>();
+    // Key is a connected node, value is a list all possible previous nodes in the different shortest paths
+    // Set during the Graph.calculateShortestPathsFrom(Node originNode)
+    // Required to work out the directions
+    private HashMap<MyNode, LinkedList<MyNode>> previousNodes = new HashMap<>();
+    private HashMap<MyNode, LinkedList<LinkedList<MyNode>>> directions = new HashMap<>();
+
+
+
+    // CONSTRUCTORS
 
     public MyNode(int nodeId) {
         this.nodeId = nodeId;
     }
 
-    public int getNodeId() { return this.nodeId; }
+    // GETTERS AND SETTERS
 
+    public int getNodeId() { return this.nodeId; }
+    public Map<MyNode, Integer> getAdjacentNodes() {
+        return adjacentNodes;
+    }
+    public HashMap<MyNode, Integer> getShortestPathLengths() {
+        return shortestPathLengths;
+    }
+    public int getShortestPathLengthTo(MyNode destinationNode) {
+        return this.shortestPathLengths.get(destinationNode);
+    }
+
+    public HashMap<MyNode, LinkedList<LinkedList<MyNode>>> getDirections() {
+        return directions;
+    }
+// METHODS FOR SHORTEST PATH LENGTHS AND ADJACENT NODES
+
+    /** Before the shortest paths are calculation, the adjacent nodes map needs to be filled
+     * @param node an adjacent node to this node
+     * @param weight weight of the edge from this node to the adjacent one
+     */
     public void addAdjacent(MyNode node, int weight) {
         this.adjacentNodes.put(node, weight);
     }
 
-    public Map<MyNode, Integer> getAdjacentNodes() {
-        return adjacentNodes;
-    }
-
-    public Map<MyNode, Integer> getShortestPaths() {
-        return shortestPaths;
-    }
-
-    public int getShortestPathLengthTo(MyNode destinationNode) {
-        return this.shortestPaths.get(destinationNode);
-    }
-
-    // linked for adding nodes at the beginning
-    public LinkedList<MyNode> getShortestPathDirectionsTo(MyNode destinationNode) {
-        LinkedList<MyNode> directions = new LinkedList<>();
-        directions.add(destinationNode);
-        if (destinationNode.equals(this)) {
-            return directions;
-        }
-        MyNode previousNode = this.previousNodes.get(destinationNode);
-        do {
-            directions.addFirst(previousNode);
-            destinationNode = previousNode;
-            previousNode = this.previousNodes.get(destinationNode);
-        } while (!destinationNode.equals(this)); // didn't work with == add to documentation
-        return directions;
-    }
-
+    /** Updates/creates the shortest path lengths map whenever a shorter path is found.
+     * @param destinationNode key in shortest path lengths map
+     * @param pathLength value in shortest path lengths map
+     */
     public void updateShortestPath(MyNode destinationNode, int pathLength) {
-        this.shortestPaths.put(destinationNode, pathLength);
+        this.shortestPathLengths.put(destinationNode, pathLength);
     }
 
-    public void addCurrentPreviousNodePair(MyNode currentNode, MyNode previousNode) {
-        this.previousNodes.put(currentNode, previousNode);
+
+    // FOR POPULATING THE PREVIOUS NODES MAP
+
+    /** If a shorter or equal path length is found, the previous nodes map has to be updated
+     * @param currentNode key in previous nodes map
+     * @param previousNode node to be added to the list of previous nodes (the list is the value in the map)
+     * @param replace if true the existing nodes in the list are first removed
+     */
+    public void addPreviousNode(MyNode currentNode, MyNode previousNode, boolean replace) {
+        // if the key doesn't exist yet, a new list for previous nodes has to be created and added as the value
+        if (!this.previousNodes.containsKey(currentNode)) {
+            LinkedList<MyNode> previousNodeList = new LinkedList<>();
+            this.previousNodes.put(currentNode, previousNodeList);
+            return;
+        }
+        if (replace) {
+            this.previousNodes.get(currentNode).clear();
+        }
+        this.previousNodes.get(currentNode).add(previousNode);
+    }
+
+
+    // METHODS FOR PUTTING TOGETHER THE DIRECTIONS (LIST OF NODES TRAVERSED IN SHORTEST PATHS)
+
+    /** Initiates the recursive putting-together of the shortest paths from the information in the previousNodes map
+     * @param destinationNode a key in the directions map (the ultimate destination)
+     */
+    public void calculateDirectionsTo(MyNode destinationNode) {
+        LinkedList<LinkedList<MyNode>> shortestPaths = new LinkedList<LinkedList<MyNode>>();
+        LinkedList<MyNode> firstPath = new LinkedList<MyNode>();
+        shortestPaths.add(firstPath);
+        this.directions.put(destinationNode, shortestPaths);
+        addNodeToPath(destinationNode, firstPath);
+    }
+
+    /** The recursive algorithm for putting the paths together
+     * There are three important cases :
+     * 1. We have already reached the origin node so we can stop. Only the first if (termination) condition is carried out
+     * 2. There is only one previous node to consider. No new paths need to be created
+     * (the first for-loop and the else-condition in the second for-loop are never carried out)
+     * 3. There are several previous nodes so new paths need to be created
+     * @param nodeToAdd the node which we add to the front of the tail
+     * @param tail the current path leading to the destination node
+     */
+    private void addNodeToPath(MyNode nodeToAdd, LinkedList<MyNode> tail) {
+        tail.addFirst(nodeToAdd);
+
+        if (nodeToAdd.equals(this)) {
+            return;
+        }
+
+        // any extra paths required need to be created before we call the addNodeToPath method again
+        // so that we can add the current tail to all paths before altering the tail
+        int numberPreviousNodes = this.previousNodes.get(nodeToAdd).size();
+        LinkedList<LinkedList<MyNode>> extraPaths = new LinkedList<>();
+        for (int i = 0; i < numberPreviousNodes-1; i++) {
+            LinkedList<MyNode> newPath = new LinkedList<MyNode>(tail);
+            extraPaths.add(newPath);
+        }
+
+        for (int i = 0; i < numberPreviousNodes; i++) {
+            if (i == 0) {
+                addNodeToPath(this.previousNodes.get(nodeToAdd).get(i), tail);
+            } else {
+                // if there is more than one previous node, we need to use an extra path per node as the tail
+                // the last node in the tail is always the ultimate destination
+                this.directions.get(tail.getLast()).add(extraPaths.get(i-1));
+                addNodeToPath(this.previousNodes.get(nodeToAdd).get(i), extraPaths.get(i-1));
+            }
+        }
     }
 
     public void print(){
-        System.out.println("Node: "+ nodeId);
-        System.out.println("_Neighbors_");
-        for (Map.Entry<MyNode, Integer> nodeEntry: adjacentNodes.entrySet()
-        ) {
-            System.out.println("Node: "+ nodeEntry.getKey().getNodeId() + " Weight: "+ nodeEntry.getValue());
-        }
+        System.out.println("Node Id: " + nodeId);
     }
 
-    @Override
-    public String toString() {
-        return "Node{" +
-                "nodeId=" + nodeId +
-                '}';
-    }
 }
+
+
+
 
 
