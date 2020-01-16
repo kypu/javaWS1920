@@ -24,6 +24,7 @@ public class Application
             System.out.println("Betweenness Centrality of Node " + node.getNodeId() + " is: " + readInGraph.calculateBetweennessCentralityOf(node));
         }
 
+
         //Will be used later
         /*
         // load mock data to test before we finish parsing the graph

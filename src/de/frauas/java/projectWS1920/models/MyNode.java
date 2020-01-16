@@ -15,8 +15,8 @@ public class MyNode {
     // Set during the Graph.calculateShortestPathsFrom(Node originNode)
     // Required to work out the directions
     private HashMap<MyNode, LinkedList<MyNode>> previousNodes = new HashMap<>();
+    // Key is a connected node. Value is a list of the shortest paths to that node. Each shortest path is a list of nodes.
     private HashMap<MyNode, LinkedList<LinkedList<MyNode>>> directions = new HashMap<>();
-
 
 
     // CONSTRUCTORS
@@ -35,13 +35,13 @@ public class MyNode {
         return shortestPathLengths;
     }
     public int getShortestPathLengthTo(MyNode destinationNode) {
-        return this.shortestPathLengths.get(destinationNode);
+        return shortestPathLengths.get(destinationNode);
     }
-
     public HashMap<MyNode, LinkedList<LinkedList<MyNode>>> getDirections() {
         return directions;
     }
-// METHODS FOR SHORTEST PATH LENGTHS AND ADJACENT NODES
+
+    // METHODS FOR SHORTEST PATH LENGTHS AND ADJACENT NODES
 
     /** Before the shortest paths are calculation, the adjacent nodes map needs to be filled
      * @param node an adjacent node to this node
@@ -72,7 +72,6 @@ public class MyNode {
         if (!this.previousNodes.containsKey(currentNode)) {
             LinkedList<MyNode> previousNodeList = new LinkedList<>();
             this.previousNodes.put(currentNode, previousNodeList);
-            return;
         }
         if (replace) {
             this.previousNodes.get(currentNode).clear();

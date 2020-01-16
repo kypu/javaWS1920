@@ -21,6 +21,7 @@ public class MyGraph {
         return nodes;
     }
 
+    // todo: delete this method?
     public MyNode getNodeById(int myNodeId) {
         for (MyNode currentNode : this.nodes) {
             if (currentNode.getNodeId() == myNodeId) {
@@ -133,36 +134,34 @@ public class MyGraph {
      * @return the betweenness centrality
      */
     public double calculateBetweennessCentralityOf(MyNode centralNode) {
+        // todo: this method only needs to be called once per graph (when we read it?)
         setAdjacentNodes();
         double betweennessCentrality = 0.0;
         // todo: all shortest paths could be calculated once per graph at the very beginning (using threads?)
         for (MyNode originNode : this.nodes) {
             if (originNode.equals(centralNode)) {
-                break;
+                continue;
             }
             calculateShortestPathsFrom(originNode);
             //only check the destination nodes which are connected because
             // unconnected nodes add 0 to the betweenness centrality and otherwise we divide by 0
             for (MyNode destinationNode : this.nodes) {
                 if (destinationNode.equals(centralNode) || destinationNode.equals(originNode) ||
-                        (originNode.getShortestPathLengthTo(destinationNode) == Integer.MAX_VALUE)) {
-                    break;
+                        (originNode.getShortestPathLengthTo(destinationNode)==Integer.MAX_VALUE)) {
+                    continue;
                 }
-                else {
-                    // todo: also calculate all directions in the thread
-                    originNode.calculateDirectionsTo(destinationNode);
-                    betweennessCentrality +=
-                            (countPathsIncluding(originNode, destinationNode, centralNode) /
-                                    countPaths(originNode, destinationNode));
-                }
-            }
+                // todo: also calculate all directions in the thread?
+                originNode.calculateDirectionsTo(destinationNode);
+                betweennessCentrality +=
+                        (countPathsIncluding(originNode, destinationNode, centralNode) /
+                                countPaths(originNode, destinationNode)); }
         }
         return betweennessCentrality;
     }
 
     // must return double not int because we divide with it later
     private double countPaths(MyNode originNode, MyNode destinationNode) {
-        // if directions map in originNode doesn't contain the destinationNode key return 0
+        // if directions map in originNode doesn't contain the destinationNode as a key return 0
         if (!originNode.getDirections().containsKey(destinationNode)) { return 0.0; }
         return originNode.getDirections().get(destinationNode).size();
     }
