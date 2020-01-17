@@ -12,7 +12,7 @@ import java.util.*;
 
 public class MockData {
 
-    public static MyGraph createMockGraphOriginUnconnected() {
+    public static MyGraph createMockGraphUnconnected() {
         MyNode node1 = new MyNode(1);
         MyNode node2 = new MyNode(2);
         MyNode node3 = new MyNode(3);
@@ -27,6 +27,29 @@ public class MockData {
         mockGraph.addNode(node4);
         mockGraph.addNode(node5);
         mockGraph.addEdge(edge1);
+
+        return mockGraph;
+    }
+
+    public static MyGraph createMockGraphMultipleShortestPaths() {
+        MyNode node1 = new MyNode(1);
+        MyNode node2 = new MyNode(2);
+        MyNode node3 = new MyNode(3);
+        MyNode node4 = new MyNode(4);
+        MyEdge edge1 = new MyEdge(1, node2, node4, 53);
+        MyEdge edge2 = new MyEdge(2, node1, node3, 45);
+        MyEdge edge3 = new MyEdge(3, node3, node4, 34);
+        MyEdge edge4 = new MyEdge(4, node1, node4, 79);
+
+        MyGraph mockGraph = new MyGraph();
+        mockGraph.addNode(node1);
+        mockGraph.addNode(node2);
+        mockGraph.addNode(node3);
+        mockGraph.addNode(node4);
+        mockGraph.addEdge(edge1);
+        mockGraph.addEdge(edge2);
+        mockGraph.addEdge(edge3);
+        mockGraph.addEdge(edge4);
 
         return mockGraph;
     }

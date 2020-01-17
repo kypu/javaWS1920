@@ -83,14 +83,18 @@ public class MyNode {
     // METHODS FOR PUTTING TOGETHER THE DIRECTIONS (LIST OF NODES TRAVERSED IN SHORTEST PATHS)
 
     /** Initiates the recursive putting-together of the shortest paths from the information in the previousNodes map
+     * First checks if there is a shortest path at all
      * @param destinationNode a key in the directions map (the ultimate destination)
      */
-    public void calculateDirectionsTo(MyNode destinationNode) {
-        LinkedList<LinkedList<MyNode>> shortestPaths = new LinkedList<LinkedList<MyNode>>();
-        LinkedList<MyNode> firstPath = new LinkedList<MyNode>();
-        shortestPaths.add(firstPath);
-        this.directions.put(destinationNode, shortestPaths);
-        addNodeToPath(destinationNode, firstPath);
+    public void calculateDirectionsTo(MyNode destinationNode)  {
+            if (this.getShortestPathLengthTo(destinationNode) == Integer.MAX_VALUE) {
+                return;
+            }
+            LinkedList<LinkedList<MyNode>> shortestPaths = new LinkedList<LinkedList<MyNode>>();
+            LinkedList<MyNode> firstPath = new LinkedList<MyNode>();
+            shortestPaths.add(firstPath);
+            this.directions.put(destinationNode, shortestPaths);
+            addNodeToPath(destinationNode, firstPath);
     }
 
     /** The recursive algorithm for putting the paths together
