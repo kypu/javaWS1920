@@ -35,6 +35,15 @@ public class MyGraph {
         return edges;
     }
 
+    /** Iterates over the edges to set the adjacent nodes map in each node
+     */
+    public void setAdjacentNodes() {
+        for (MyEdge edge : this.edges) {
+            edge.getDestinationNode().addAdjacent(edge.getOriginNode(), edge.getWeight());
+            edge.getOriginNode().addAdjacent(edge.getDestinationNode(), edge.getWeight());
+        }
+    }
+
 
     // FOR POPULATING MOCK GRAPHS
 
@@ -53,9 +62,6 @@ public class MyGraph {
      * @param originNode node from which all shortest paths should be calculated
      */
     public void calculateShortestPathsFrom(MyNode originNode) {
-        // iterates over all edges to fill the adjacent nodes attribute of each node.
-        // todo: only needs to be called once per graph - call setAdjacentNodes() from main as soon as graph is read?
-        this.setAdjacentNodes();
         // all nodes in the graph are added to unfinalised and removed later one by one
         HashSet<MyNode> unfinalised = new HashSet<MyNode>(this.nodes);
         // distance to origin node is set to 0 and all other nodes to infinity (Integer.MAX_VALUE)
@@ -89,15 +95,6 @@ public class MyGraph {
         this.connected = true;
     }
 
-    /** Needs public access because is called when making mock graphs
-     */
-    public void setAdjacentNodes() {
-        for (MyEdge edge : this.edges) {
-            edge.getDestinationNode().addAdjacent(edge.getOriginNode(), edge.getWeight());
-            edge.getOriginNode().addAdjacent(edge.getDestinationNode(), edge.getWeight());
-        }
-    }
-
     private void initialiseShortestPaths(MyNode originNode) {
         for (MyNode currentNode : this.nodes) {
             if (currentNode == originNode) {
@@ -125,7 +122,7 @@ public class MyGraph {
     // METHODS FOR CALCULATING BETWEENNESS CENTRALITY
 
     /** Returns the betweenness centrality of a given node in the following steps:
-     * 1. for every node other than the given node, the shortest paths to all other nodes need to be calculated (first for-loop)
+     * 1. for every node other than the centralNode, the shortest paths to all other nodes need to be calculated (first for-loop)
      * 2. then for every combination of nodes which are connected anddo not include the central node,
      * the path directions need to be calculated (second for-loop)
      * 3. then the number of paths which include the central node is divided by the total paths for each combination
@@ -134,29 +131,24 @@ public class MyGraph {
      * @return the betweenness centrality
      */
     public double calculateBetweennessCentralityOf(MyNode centralNode) {
-        // todo: this method only needs to be called once per graph (when we read it?)
-        setAdjacentNodes();
         double betweennessCentrality = 0.0;
-        // todo: all shortest paths could be calculated once per graph at the very beginning (using threads?)
         for (MyNode originNode : this.nodes) {
             if (originNode.equals(centralNode)) {
                 continue;
             }
-            calculateShortestPathsFrom(originNode);
-            //only check the destination nodes which are connected because
-            // unconnected nodes add 0 to the betweenness centrality and otherwise we divide by 0
+            //only check the destination nodes which are connected to the originNode because
+            //unconnected nodes add 0 to the betweenness centrality anyway and otherwise we would divide by 0
             for (MyNode destinationNode : this.nodes) {
                 if (destinationNode.equals(centralNode) || destinationNode.equals(originNode) ||
                         (originNode.getShortestPathLengthTo(destinationNode)==Integer.MAX_VALUE)) {
                     continue;
                 }
-                // todo: also calculate all directions in the thread?
-                originNode.calculateDirectionsTo(destinationNode);
                 betweennessCentrality +=
                         (countPathsIncluding(originNode, destinationNode, centralNode) /
                                 countPaths(originNode, destinationNode)); }
         }
-        return betweennessCentrality;
+        // divide by 2 because we have counted every pair of nodes twice (AB and BA)
+        return betweennessCentrality/2;
     }
 
     // must return double not int because we divide with it later
