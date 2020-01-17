@@ -19,7 +19,18 @@ public class Application
         MyGraph readInGraph = GraphML.importData(Resource.getFilepath() + "small_graph.graphml");
         Boolean didItWork = GraphML.exportData(Resource.getFilepath() + "attempt.graphml", readInGraph);
         if (didItWork) System.out.println("Success!");
+      
+        // set attributes in the graph we just read in. This must be done first (before betweenness centrality is calculated)
+        readInGraph.setAdjacentNodes();
+        // todo: this could be threaded?
+        for (MyNode originNode : readInGraph.getNodes()) {
+            readInGraph.calculateShortestPathsFrom(originNode);
+            for (MyNode destinationNode : readInGraph.getNodes()) {
+                originNode.calculateDirectionsTo(destinationNode);
+            }
+        }
 
+        // output betweenness centrality
         for (MyNode node : readInGraph.getNodes()) {
             System.out.println("Betweenness Centrality of Node " + node.getNodeId() + " is: " + readInGraph.calculateBetweennessCentralityOf(node));
         }
