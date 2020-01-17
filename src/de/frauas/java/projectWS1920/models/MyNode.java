@@ -41,6 +41,7 @@ public class MyNode {
         return directions;
     }
 
+  
     // METHODS FOR SHORTEST PATH LENGTHS AND ADJACENT NODES
 
     /** Before the shortest paths are calculation, the adjacent nodes map needs to be filled

@@ -14,7 +14,7 @@ public class MyGraph {
     // if all nodes are connected to each other (directly or indirectly)
     private boolean connected;
 
-
+  
     // GETTERS AND SETTERS
 
     public LinkedHashSet<MyNode> getNodes() {
@@ -55,8 +55,39 @@ public class MyGraph {
     }
 
 
-    // FOR SHORTEST PATH CALCULATION
+    // GETTERS AND SETTERS
 
+    public LinkedHashSet<MyNode> getNodes() {
+        return nodes;
+    }
+
+    // todo: delete this method?
+    public MyNode getNodeById(int myNodeId) {
+        for (MyNode currentNode : this.nodes) {
+            if (currentNode.getNodeId() == myNodeId) {
+                return currentNode;
+            } // todo: else statement to return an exception if the node is not found
+        }
+        return null;
+    }
+
+    public LinkedHashSet<MyEdge> getEdges() {
+        return edges;
+    }
+
+
+    // FOR POPULATING MOCK GRAPHS
+
+    public void addNode(MyNode newNode) {
+        this.nodes.add(newNode);
+    }
+    public void addEdge(MyEdge newEdge) {
+        this.edges.add(newEdge);
+    }
+
+
+    // FOR SHORTEST PATH CALCULATION
+  
     /** Main method for calculating shortest paths. Some functionalities have been outsourced into smaller methods
      *  for better readability (setAdjacentNodes, initialiseShortestPaths, getNodeWithSmallestShortestPath)
      * @param originNode node from which all shortest paths should be calculated
