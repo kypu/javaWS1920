@@ -2,15 +2,10 @@ package de.frauas.java.projectWS1920.application;
 
 import de.frauas.java.projectWS1920.Bc.Validate;
 import de.frauas.java.projectWS1920.Parser.ICommandLineParser;
-import de.frauas.java.projectWS1920.Parser.Implementation.OperationParser;
 import org.apache.commons.cli.*;
 //import org.apache.commons.lang3.ArrayUtils;
 //import org.apache.commons.math3.stat.StatUtils;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CLApplication<P>
@@ -31,7 +26,7 @@ public class CLApplication<P>
             ICommandLineParser argumentParser;
 
             String filePath = args[0];
-            Validate.filepath(filePath);
+            Validate.isFile(filePath);
 
             String[] argsSlice = Arrays.copyOfRange(args,1, args.length);
             CommandLine line = parseArguments(argsSlice);

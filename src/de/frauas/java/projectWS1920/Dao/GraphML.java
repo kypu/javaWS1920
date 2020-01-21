@@ -27,7 +27,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
     {
         MyGraph convertedGraph = new MyGraph();
 
-        if (Validate.filepath(path))
+        if (Validate.isFile(path))
         {
             Graph tinkerGraph = new TinkerGraph();
             GraphMLReader tinkerReader = new GraphMLReader(tinkerGraph);
@@ -97,7 +97,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
             */
             OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(filepath));
 
-
+            tinkerWriter.setNormalize(true);
             Iterable<MyNode> nodesToExport = graph.getNodes();
             Iterable<MyEdge> edgesToExport = graph.getEdges();
 

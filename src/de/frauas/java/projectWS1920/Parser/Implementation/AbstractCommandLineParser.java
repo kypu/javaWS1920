@@ -28,7 +28,7 @@ public abstract class AbstractCommandLineParser implements ICommandLineParser
     public String getOpenFilePath(String[] args) throws FileNotFoundException
     {
         String filePath = args[0];
-        Validate.filepath(filePath);
+        Validate.isFile(filePath);
 
         return filePath;
     }

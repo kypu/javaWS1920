@@ -10,7 +10,6 @@ import de.frauas.java.projectWS1920.Bc.Validate;
 import de.frauas.java.projectWS1920.Dao.GraphML;
 import de.frauas.java.projectWS1920.resources.Resource;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class GraphMLTest
@@ -29,7 +28,7 @@ class GraphMLTest
     @Test
     void importData_NodesAvailability_Test() throws Exception
     {
-        assertTrue(Validate.filepath(testPath));
+        assertTrue(Validate.isFile(testPath));
 
         // arrange
 
@@ -54,7 +53,7 @@ class GraphMLTest
     @Test
     void importData_EdgesAvailability_Test() throws Exception
     {
-        assertTrue(Validate.filepath(testPath));
+        assertTrue(Validate.isFile(testPath));
 
         // arrange
 
