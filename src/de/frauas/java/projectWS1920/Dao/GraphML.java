@@ -19,7 +19,6 @@ TODO:
 - refactor importData() to satisfy interface
 - write integration test for exportData()
 - Lots of documentation missing!
-- Need to rename all of our models!
  */
 
 public class GraphML //<N, E> implements IGraphML<N, E>
@@ -55,12 +54,11 @@ public class GraphML //<N, E> implements IGraphML<N, E>
                 convertedGraph.addNode(nodeToAdd);
             }
 
-            // convert given edges to own type
+            // convert given edges to my type
             for (Edge edge : edges)
             {
                 Integer eId = Integer.parseInt(edge.getId().toString());
                 Integer weight = Integer.parseInt(edge.getLabel());
-                //Integer weight = Integer.parseInt(edge.getProperty("e_weight"));
                 Vertex target = edge.getVertex(Direction.IN);
                 Vertex origin = edge.getVertex(Direction.OUT);
 

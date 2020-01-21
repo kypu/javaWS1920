@@ -1,5 +1,7 @@
 package de.frauas.java.projectWS1920.Bc;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 
@@ -11,13 +13,13 @@ public class Validate
     /*
     Validates given file path.
      */
-    public static Boolean filepath(String path)
-    {
+    public static Boolean filepath(String path) throws FileNotFoundException {
         try
         {
-            Paths.get(path);
+            File file = new File(path);
+            if (!file.isFile()) throw new FileNotFoundException();
 
-        } catch (InvalidPathException ex)
+        } catch (FileNotFoundException ex)
         {
             throw ex;
         }

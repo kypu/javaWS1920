@@ -1,6 +1,8 @@
 package de.frauas.java.projectWS1920.application;
 
 import de.frauas.java.projectWS1920.Bc.Validate;
+import de.frauas.java.projectWS1920.Parser.ICommandLineParser;
+import de.frauas.java.projectWS1920.Parser.Implementation.OperationParser;
 import org.apache.commons.cli.*;
 //import org.apache.commons.lang3.ArrayUtils;
 //import org.apache.commons.math3.stat.StatUtils;
@@ -11,20 +13,23 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CLApplication
+public class CLApplication<P>
 {
     /*
     possible exceptions:
-    - no args at all
-    - no file path
-    - invalid file path
-    - no parameter for option
-    - more than one thing done
+    - no args at all +
+    - no file path +
+    - invalid file path (open) +
+    - invalid file path (save) -
+    - no parameter for option +
+    - more than one thing done ?
      */
     public void run(String[] args)
     {
         try
         {
+            ICommandLineParser argumentParser;
+
             String filePath = args[0];
             Validate.filepath(filePath);
 
@@ -35,14 +40,15 @@ public class CLApplication
             System.out.println("file path: " + filePath);
             System.out.println("option value: " + line.getOptionValue("a"));
             //if line.hasOption(..)
-
         } catch (Exception ex)
         {
+            /*
             System.err.println("Failed to parse command line arguments");
             System.err.println(ex.toString());
             ex.printStackTrace();
             printAppHelp();
-
+            */
+            System.out.println("Caught something, brother!");
             System.exit(1);
         }
     }
@@ -84,7 +90,7 @@ public class CLApplication
         return options;
     }
 
-    private void printAppHelp()
+    private void printHelp()
     {
         Options options = getOptions();
 
