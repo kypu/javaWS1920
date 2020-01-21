@@ -14,9 +14,14 @@ public class Application
 {
     public static void main(String[] args) throws Exception
     {
-        String[] testArgs = new String[]{ Resource.getFilepath()+"small_graph.graphml", "-a", "Test"};
+        String fn = "small_graph.graphml";
+        String[] testArgs = new String[]{ Resource.getFilepath() + fn, "-a", "Test"};
         var app = new CLApplication();
         app.run(testArgs);
+
+        System.out.println("Generate export file:");
+        MyGraph testeeGraph = GraphML.importData(Resource.getFilepath()+fn);
+        GraphML.exportData(Resource.getFilepath()+"testExport.graphml", testeeGraph);
 
         /*
         MyGraph readInGraph = GraphML.importData(Resource.getFilepath() + "small_graph.graphml");
