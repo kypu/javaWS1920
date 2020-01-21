@@ -26,7 +26,7 @@ public class MyEdge {
         return weight;
     }
 
-    public void print(){
+    public void print() {
         System.out.println("Edge: " + edgeId);
         System.out.println("Weight: " + weight);
         System.out.println("Edge between Node" + originNode.getNodeId() + " and Node " + destinationNode.getNodeId());

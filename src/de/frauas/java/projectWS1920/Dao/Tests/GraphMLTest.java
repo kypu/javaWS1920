@@ -1,6 +1,7 @@
 package de.frauas.java.projectWS1920.Dao.Tests;
 
 import org.jetbrains.annotations.Nullable;
+import org.junit.jupiter.api.Test;
 
 import de.frauas.java.projectWS1920.models.MyGraph;
 import de.frauas.java.projectWS1920.models.MyEdge;
@@ -8,7 +9,6 @@ import de.frauas.java.projectWS1920.models.MyNode;
 import de.frauas.java.projectWS1920.Bc.Validate;
 import de.frauas.java.projectWS1920.Dao.GraphML;
 import de.frauas.java.projectWS1920.resources.Resource;
-
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,10 +25,10 @@ class GraphMLTest
     Checks if all node ids of given GraphML file have been read in correctly.
     Small_graph.graphml contains nodes with id ranging from 0 - 14
     */
-    @org.junit.jupiter.api.Test
+    @Test
     void importData_NodesAvailability_Test() throws Exception
     {
-        assertTrue(Validate.filepath(testPath));
+        assertTrue(Validate.isFile(testPath));
 
         // arrange
 
@@ -50,10 +50,10 @@ class GraphMLTest
     Checks if all edge ids of given GraphML file have been read in correctly.
     Small_graph.graphml contains edges with id ranging from 0 - 27
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void importData_EdgesAvailability_Test() throws Exception
     {
-        assertTrue(Validate.filepath(testPath));
+        assertTrue(Validate.isFile(testPath));
 
         // arrange
 
@@ -74,7 +74,7 @@ class GraphMLTest
     /*
     Checks if all an example edge has been read in and stored correctly.
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void importData_EdgeExample_Test() throws Exception
     {
         // arrange
@@ -96,6 +96,12 @@ class GraphMLTest
         assertEquals(exampleEdge.getDestinationNode().getNodeId(), testeeEdge.getDestinationNode().getNodeId());
     }
 
+    /**
+     *
+     * @param graph Graph that's being searched.
+     * @param edgeId Edge id you're looking for.
+     * @return Edge with the id you're looking for in given graph. If not found, returns null.
+     */
     @Nullable
     private MyEdge getEdgeByIdHelper(MyGraph graph, Integer edgeId)
     {

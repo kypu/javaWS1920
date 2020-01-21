@@ -1,14 +1,12 @@
 //Java group 26
 package de.frauas.java.projectWS1920.application;
 
-//Will be used later
-//import de.frauas.java.projectWS1920.models.Edge;
-//import de.frauas.java.projectWS1920.models.Graph;
-//import de.frauas.java.projectWS1920.models.Node;
-
-import de.frauas.java.projectWS1920.Dao.GraphML;
+import de.frauas.java.projectWS1920.models.MyEdge;
 import de.frauas.java.projectWS1920.models.MyGraph;
 import de.frauas.java.projectWS1920.models.MyNode;
+
+import de.frauas.java.projectWS1920.Dao.GraphML;
+
 import de.frauas.java.projectWS1920.resources.Resource;
 
 
@@ -16,9 +14,19 @@ public class Application
 {
     public static void main(String[] args) throws Exception
     {
+        for (String s : args){
+            System.out.println(s);
+        }
+        System.out.println("________________");
+        String[] testArgs = new String[]{ "src\\de\\frauas\\java\\projectWS1920\\resources\\small_graph.graphml", "-a", "DeineMudda"};
+        var app = new CLApplication();
+        app.run(testArgs);
+
+        /*
         MyGraph readInGraph = GraphML.importData(Resource.getFilepath() + "small_graph.graphml");
         Boolean didItWork = GraphML.exportData(Resource.getFilepath() + "attempt.graphml", readInGraph);
         if (didItWork) System.out.println("Success!");
+
       
         // set attributes in the graph we just read in. This must be done first (before betweenness centrality is calculated)
         readInGraph.setAdjacentNodes();
@@ -36,7 +44,6 @@ public class Application
         }
 
 
-        //Will be used later
         /*
         // load mock data to test before we finish parsing the graph
         Graph mockGraph = MockData.createRandomMockGraph(10);
