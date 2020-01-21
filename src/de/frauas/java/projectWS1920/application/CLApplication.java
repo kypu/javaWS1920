@@ -10,15 +10,6 @@ import java.util.Arrays;
 
 public class CLApplication<P>
 {
-    /*
-    possible exceptions:
-    - no args at all +
-    - no file path +
-    - invalid file path (open) +
-    - invalid file path (save) -
-    - no parameter for option +
-    - more than one thing done ?
-     */
     public void run(String[] args)
     {
         try

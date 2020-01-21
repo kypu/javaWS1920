@@ -14,11 +14,7 @@ public class Application
 {
     public static void main(String[] args) throws Exception
     {
-        for (String s : args){
-            System.out.println(s);
-        }
-        System.out.println("________________");
-        String[] testArgs = new String[]{ "src\\de\\frauas\\java\\projectWS1920\\resources\\small_graph.graphml", "-a", "DeineMudda"};
+        String[] testArgs = new String[]{ Resource.getFilepath()+"small_graph.graphml", "-a", "Test"};
         var app = new CLApplication();
         app.run(testArgs);
 
