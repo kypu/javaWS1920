@@ -17,6 +17,7 @@ public class MyNode {
     private HashMap<MyNode, LinkedList<MyNode>> previousNodes = new HashMap<>();
     // Key is a connected node. Value is a list of the shortest paths to that node. Each shortest path is a list of nodes.
     private HashMap<MyNode, LinkedList<LinkedList<MyNode>>> directions = new HashMap<>();
+    private double betweennessCentrality;
 
 
     // CONSTRUCTORS
@@ -40,8 +41,12 @@ public class MyNode {
     public HashMap<MyNode, LinkedList<LinkedList<MyNode>>> getDirections() {
         return directions;
     }
-
-  
+    public void setBetweennessCentrality(double betweennessCentrality) {
+        this.betweennessCentrality = betweennessCentrality;
+    }
+    public double getBetweennessCentrality() {
+        return betweennessCentrality;
+    }
     // METHODS FOR SHORTEST PATH LENGTHS AND ADJACENT NODES
 
     /** Before the shortest paths are calculation, the adjacent nodes map needs to be filled

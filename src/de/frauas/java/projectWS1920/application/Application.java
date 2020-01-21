@@ -1,12 +1,9 @@
 //Java group 26
 package de.frauas.java.projectWS1920.application;
 
-import de.frauas.java.projectWS1920.models.MyEdge;
+import de.frauas.java.projectWS1920.Dao.GraphML;
 import de.frauas.java.projectWS1920.models.MyGraph;
 import de.frauas.java.projectWS1920.models.MyNode;
-
-import de.frauas.java.projectWS1920.Dao.GraphML;
-
 import de.frauas.java.projectWS1920.resources.Resource;
 
 
@@ -19,14 +16,10 @@ public class Application
         var app = new CLApplication();
         app.run(testArgs);
 
-        System.out.println("Generate export file:");
-        MyGraph testeeGraph = GraphML.importData(Resource.getFilepath()+fn);
-        GraphML.exportData(Resource.getFilepath()+"testExport.graphml", testeeGraph);
-
-        /*
         MyGraph readInGraph = GraphML.importData(Resource.getFilepath() + "small_graph.graphml");
+        /*
         Boolean didItWork = GraphML.exportData(Resource.getFilepath() + "attempt.graphml", readInGraph);
-        if (didItWork) System.out.println("Success!");
+        if (didItWork) System.out.println("Success!");*/
 
       
         // set attributes in the graph we just read in. This must be done first (before betweenness centrality is calculated)
@@ -39,10 +32,20 @@ public class Application
             }
         }
 
+        for (MyNode node : readInGraph.getNodes()) {
+            readInGraph.calculateBetweennessCentralityOf(node);
+        }
+
+        readInGraph.setDiameter();
+
         // output betweenness centrality
         for (MyNode node : readInGraph.getNodes()) {
-            System.out.println("Betweenness Centrality of Node " + node.getNodeId() + " is: " + readInGraph.calculateBetweennessCentralityOf(node));
+            System.out.println("Betweenness Centrality of Node " + node.getNodeId() + " is: " + node.getBetweennessCentrality());
         }
+
+        System.out.println("Is graph connected? " + readInGraph.getConnected());
+
+        System.out.println("Diameter: " + readInGraph.getDiameter());
 
 
         /*
