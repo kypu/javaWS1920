@@ -1,6 +1,7 @@
 package de.frauas.java.projectWS1920.Parser.Implementation;
 
 import de.frauas.java.projectWS1920.Bc.Validate;
+import de.frauas.java.projectWS1920.Exceptions.ValidationException;
 import de.frauas.java.projectWS1920.Parser.ICommandLineParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -25,7 +26,7 @@ public abstract class AbstractCommandLineParser implements ICommandLineParser
     }
 
     @Override
-    public String getOpenFilePath(String[] args) throws FileNotFoundException
+    public String getOpenFilePath(String[] args) throws ValidationException
     {
         String filePath = args[0];
         Validate.isFile(filePath);
