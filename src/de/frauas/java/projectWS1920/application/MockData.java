@@ -1,13 +1,10 @@
 package de.frauas.java.projectWS1920.application;
 
-
 import de.frauas.java.projectWS1920.models.MyEdge;
 import de.frauas.java.projectWS1920.models.MyGraph;
 import de.frauas.java.projectWS1920.models.MyNode;
 
 import java.util.*;
-
-
 
 
 public class MockData {

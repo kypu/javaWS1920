@@ -18,7 +18,7 @@ class GraphMLTest
     //is cwd needed? if so, add "\\" to beginning of Resource.filepath
     // String currentWorkingDirectory = System.getProperty("user.dir");
     private String resourceFilepath = Resource.getFilepath();
-    private String graphMLFile = "attempt.graphml";
+    private String graphMLFile = "testExport.graphml";
     private final String testPath = resourceFilepath + graphMLFile;
 
     /*
