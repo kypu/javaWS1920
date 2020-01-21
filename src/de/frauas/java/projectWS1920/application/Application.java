@@ -32,10 +32,20 @@ public class Application
             }
         }
 
+        for (MyNode node : readInGraph.getNodes()) {
+            readInGraph.calculateBetweennessCentralityOf(node);
+        }
+
+        readInGraph.setDiameter();
+
         // output betweenness centrality
         for (MyNode node : readInGraph.getNodes()) {
             System.out.println("Betweenness Centrality of Node " + node.getNodeId() + " is: " + node.getBetweennessCentrality());
         }
+
+        System.out.println("Is graph connected? " + readInGraph.getConnected());
+
+        System.out.println("Diameter: " + readInGraph.getDiameter());
 
 
         /*
