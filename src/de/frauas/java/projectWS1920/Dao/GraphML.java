@@ -1,19 +1,16 @@
 package de.frauas.java.projectWS1920.Dao;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
 
 import com.tinkerpop.blueprints.*;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
-import com.tinkerpop.blueprints.util.io.graphml.GraphMLTokens;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLWriter;
 
 import de.frauas.java.projectWS1920.Bc.Validate;
-import de.frauas.java.projectWS1920.models.Node;
+import de.frauas.java.projectWS1920.models.MyEdge;
+import de.frauas.java.projectWS1920.models.MyGraph;
+import de.frauas.java.projectWS1920.models.MyNode;
 
 /*
 TODO:
@@ -22,17 +19,15 @@ TODO:
 - refactor importData() to satisfy interface
 - write integration test for exportData()
 - Lots of documentation missing!
-- Need to rename all of our models!
  */
 
 public class GraphML //<N, E> implements IGraphML<N, E>
 {
-    public static de.frauas.java.projectWS1920.models.Graph importData(String path) throws Exception
+    public static MyGraph importData(String path) throws Exception
     {
-        de.frauas.java.projectWS1920.models.Graph convertedGraph =
-                new de.frauas.java.projectWS1920.models.Graph();
+        MyGraph convertedGraph = new MyGraph();
 
-        if (Validate.filepath(path))
+        if (Validate.isFile(path))
         {
             Graph tinkerGraph = new TinkerGraph();
             GraphMLReader tinkerReader = new GraphMLReader(tinkerGraph);
@@ -54,28 +49,26 @@ public class GraphML //<N, E> implements IGraphML<N, E>
                 //Integer nodeId = (Integer) vertex.getId();
                 Integer nodeId = Integer.parseInt(vertex.getId().toString());
 
-                de.frauas.java.projectWS1920.models.Node node =
-                        new de.frauas.java.projectWS1920.models.Node(nodeId);
+                MyNode nodeToAdd = new MyNode(nodeId);
 
-                convertedGraph.addNode(node);
+                convertedGraph.addNode(nodeToAdd);
             }
 
-            // convert given edges to own type
+            // convert given edges to my type
             for (Edge edge : edges)
             {
                 Integer eId = Integer.parseInt(edge.getId().toString());
                 Integer weight = Integer.parseInt(edge.getLabel());
-                //Integer weight = Integer.parseInt(edge.getProperty("e_weight"));
                 Vertex target = edge.getVertex(Direction.IN);
                 Vertex origin = edge.getVertex(Direction.OUT);
 
-                convertedGraph.addEdge(
-                        new de.frauas.java.projectWS1920.models.Edge(
-                                eId,
-                                convertedGraph.getNodeById(Integer.parseInt(origin.getId().toString())),
-                                convertedGraph.getNodeById(Integer.parseInt(target.getId().toString())),
-                                weight
-                        ));
+                MyEdge edgeToAdd = new MyEdge(
+                        eId,
+                        convertedGraph.getNodeById(Integer.parseInt(origin.getId().toString())),
+                        convertedGraph.getNodeById(Integer.parseInt(target.getId().toString())),
+                        weight
+                );
+                convertedGraph.addEdge(edgeToAdd);
             }
         } //end of if
         return convertedGraph;
@@ -85,7 +78,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
     Exports given Graph to .graphml file.
     DOESN'T WORK YET. TODO.
      */
-    public static Boolean exportData(String filepath, de.frauas.java.projectWS1920.models.Graph graph)
+    public static Boolean exportData(String filepath, MyGraph graph)
     {
         try
         {
@@ -93,11 +86,11 @@ public class GraphML //<N, E> implements IGraphML<N, E>
             GraphMLWriter tinkerWriter = new GraphMLWriter(tinkerGraph);
             OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(filepath));
 
+            tinkerWriter.setNormalize(true);
+            Iterable<MyNode> nodesToExport = graph.getNodes();
+            Iterable<MyEdge> edgesToExport = graph.getEdges();
 
-            Iterable<de.frauas.java.projectWS1920.models.Node> nodesToExport = graph.getNodes();
-            Iterable<de.frauas.java.projectWS1920.models.Edge> edgesToExport = graph.getEdges();
-
-            for (Node node : nodesToExport)
+            for (MyNode node : nodesToExport)
             {
                 //converts the node ID from Integer to String
                 String nodeId=Integer.toString(node.getNodeId());
@@ -116,7 +109,8 @@ public class GraphML //<N, E> implements IGraphML<N, E>
             // - How to get correct node (as origin and target) when id's are changed before?
             // - How to set header correctly?
 
-            for (de.frauas.java.projectWS1920.models.Edge edge : edgesToExport)
+            for (MyEdge edge : edgesToExport)
+
             {
                 //converts the edge ID from Integer to String
                 String edgeId=Integer.toString(edge.getEdgeId());

@@ -1,34 +1,45 @@
 //Java group 26
 package de.frauas.java.projectWS1920.application;
 
-//Will be used later
-//import de.frauas.java.projectWS1920.models.Edge;
-//import de.frauas.java.projectWS1920.models.Graph;
-//import de.frauas.java.projectWS1920.models.Node;
+import de.frauas.java.projectWS1920.models.MyEdge;
+import de.frauas.java.projectWS1920.models.MyGraph;
+import de.frauas.java.projectWS1920.models.MyNode;
 
-import com.tinkerpop.blueprints.Edge;
-import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
-import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
-import com.tinkerpop.blueprints.Direction;
 import de.frauas.java.projectWS1920.Dao.GraphML;
-import de.frauas.java.projectWS1920.models.Graph;
-import de.frauas.java.projectWS1920.resources.Resource;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import de.frauas.java.projectWS1920.resources.Resource;
 
 
 public class Application
 {
     public static void main(String[] args) throws Exception
     {
-        Graph readInGraph = GraphML.importData(Resource.getFilepath() + "small_graph.graphml");
+        String[] testArgs = new String[]{ Resource.getFilepath()+"small_graph.graphml", "-a", "Test"};
+        var app = new CLApplication();
+        app.run(testArgs);
+
+        /*
+        MyGraph readInGraph = GraphML.importData(Resource.getFilepath() + "small_graph.graphml");
         Boolean didItWork = GraphML.exportData(Resource.getFilepath() + "attempt.graphml", readInGraph);
         if (didItWork) System.out.println("Success!");
 
-        //Will be used later
+      
+        // set attributes in the graph we just read in. This must be done first (before betweenness centrality is calculated)
+        readInGraph.setAdjacentNodes();
+        // todo: this could be threaded?
+        for (MyNode originNode : readInGraph.getNodes()) {
+            readInGraph.calculateShortestPathsFrom(originNode);
+            for (MyNode destinationNode : readInGraph.getNodes()) {
+                originNode.calculateDirectionsTo(destinationNode);
+            }
+        }
+
+        // output betweenness centrality
+        for (MyNode node : readInGraph.getNodes()) {
+            System.out.println("Betweenness Centrality of Node " + node.getNodeId() + " is: " + readInGraph.calculateBetweennessCentralityOf(node));
+        }
+
+
         /*
         // load mock data to test before we finish parsing the graph
         Graph mockGraph = MockData.createRandomMockGraph(10);
