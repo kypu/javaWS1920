@@ -90,18 +90,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
         try
         {
             Graph tinkerGraph = new TinkerGraph();
-            /*
-            Map<String, String> vertexKeyTypes = new HashMap<String, String>();
-            vertexKeyTypes.put("v_id", GraphMLTokens.DOUBLE);
-
-            Map<String, String> edgeKeyTypes = new HashMap<String, String>();
-            edgeKeyTypes.put("e_weight", GraphMLTokens.DOUBLE);
-            */
             GraphMLWriter tinkerWriter = new GraphMLWriter(tinkerGraph);
-            /*
-            tinkerWriter.setVertexKeyTypes(vertexKeyTypes);
-            tinkerWriter.setEdgeKeyTypes(edgeKeyTypes);
-            */
             OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(filepath));
 
 
@@ -110,21 +99,44 @@ public class GraphML //<N, E> implements IGraphML<N, E>
 
             for (Node node : nodesToExport)
             {
-                Vertex convertedVertex = tinkerGraph.addVertex(null);
-                convertedVertex.setProperty("v_id", Integer.toString(node.getNodeId()));
-                //TODO How to set id??
+                //converts the node ID from Integer to String
+                String nodeId=Integer.toString(node.getNodeId());
+
+                //adds the vertex to the TinkerGraph
+                //the parameter inside addVertex() sets the vertexID
+                Vertex convertedVertex = tinkerGraph.addVertex("n"+nodeId);
+
+                //Sets the vertex property name and value
+                convertedVertex.setProperty("v_id", convertedVertex.getId());
+
             }
 
             // Current problems:
             // - What do .addEdge() parameters stand for?
             // - How to get correct node (as origin and target) when id's are changed before?
             // - How to set header correctly?
+
             for (de.frauas.java.projectWS1920.models.Edge edge : edgesToExport)
             {
-                //Edge convertexEdge = tinkerGraph.addEdge("", "", "", "");
+                //converts the edge ID from Integer to String
+                String edgeId=Integer.toString(edge.getEdgeId());
+                //converts the OriginNodeID from Integer to String
+                String sourceId="n"+Integer.toString(edge.getOriginNode().getNodeId());
+                //converts the DestinationNodeID from Integer to String
+                String targetId="n"+Integer.toString(edge.getDestinationNode().getNodeId());
+                //converts the edge weight from Integer to String
+                String edgeWeight=Integer.toString(edge.getWeight());
+
+                //adds the edge to the TinkerGraph in the form
+                //addEdge(edgeId, sourceNode, TargetNode, weight)
+                Edge convertedEdge = tinkerGraph.addEdge(edgeId, tinkerGraph.getVertex(sourceId), tinkerGraph.getVertex(targetId), edgeWeight);
+                convertedEdge.setProperty("e_weight", edgeWeight);
+                convertedEdge.setProperty("e_id", edgeId);
+
             }
 
             tinkerWriter.outputGraph(outputStream);
+
             return true;
         } catch (IOException e) //add extra FileNotFoundException (subclass of IOException) for better logging?
         {
