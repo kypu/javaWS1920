@@ -13,8 +13,9 @@ public class MyGraph {
     private int diameter;
     // if all nodes are connected to each other (directly or indirectly)
     private boolean connected;
+    public static final int DIAMETER_UNDEFINED = -1;
 
-  
+
     // GETTERS AND SETTERS
 
     public LinkedHashSet<MyNode> getNodes() {
@@ -33,6 +34,14 @@ public class MyGraph {
 
     public LinkedHashSet<MyEdge> getEdges() {
         return edges;
+    }
+
+    public boolean getConnected() {
+        return connected;
+    }
+
+    public int getDiameter() {
+        return diameter;
     }
 
     /** Iterates over the edges to set the adjacent nodes map in each node
@@ -130,7 +139,7 @@ public class MyGraph {
      * @param centralNode the node for which we calculate the betweenness centrality
      * @return the betweenness centrality
      */
-    public double calculateBetweennessCentralityOf(MyNode centralNode) {
+    public void calculateBetweennessCentralityOf(MyNode centralNode) {
         double betweennessCentrality = 0.0;
         for (MyNode originNode : this.nodes) {
             if (originNode.equals(centralNode)) {
@@ -148,7 +157,7 @@ public class MyGraph {
                                 countPaths(originNode, destinationNode)); }
         }
         // divide by 2 because we have counted every pair of nodes twice (AB and BA)
-        return betweennessCentrality/2;
+        centralNode.setBetweennessCentrality(betweennessCentrality/2);
     }
 
     // must return double not int because we divide with it later
@@ -166,4 +175,27 @@ public class MyGraph {
         }
         return numberPaths;
     }
+
+    /**
+     *Diameter D of a Graph is defined as the longest path of the shortest paths between any two nodes.
+     * If the graph is not connected, then the diameter is undefined (-1)
+     */
+    public void setDiameter() {
+        int maxShortestDistance = 0;
+        //choose one node from all nodes
+        for (MyNode currentNode : getNodes()) {
+            for (MyNode node : getNodes()) {
+                int pathLength = currentNode.getShortestPathLengthTo(node);
+                if(pathLength>maxShortestDistance) {
+                    maxShortestDistance = pathLength;
+                }
+            }
+        }
+        //if the diameter length is infinity, then return -1, meaning that there is no diameter
+        if(diameter==Integer.MAX_VALUE) {
+            diameter = DIAMETER_UNDEFINED;
+        }
+        else { diameter=maxShortestDistance; }
+    }
+
 }
