@@ -192,7 +192,7 @@ public class MyGraph {
             }
         }
         //if the diameter length is infinity, then return -1, meaning that there is no diameter
-        if(diameter==Integer.MAX_VALUE) {
+        if(maxShortestDistance==Integer.MAX_VALUE) {
             diameter = DIAMETER_UNDEFINED;
         }
         else { diameter=maxShortestDistance; }

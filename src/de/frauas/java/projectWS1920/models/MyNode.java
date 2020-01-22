@@ -41,6 +41,9 @@ public class MyNode {
     public HashMap<MyNode, LinkedList<LinkedList<MyNode>>> getDirections() {
         return directions;
     }
+    public LinkedList<LinkedList<MyNode>> getDirectionsTo(MyNode destinationNode) {
+        return directions.get(destinationNode);
+    }
     public void setBetweennessCentrality(double betweennessCentrality) {
         this.betweennessCentrality = betweennessCentrality;
     }
