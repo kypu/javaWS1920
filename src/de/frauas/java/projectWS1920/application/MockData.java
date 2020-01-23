@@ -90,8 +90,6 @@ public class MockData {
            mockGraph.addEdge(randomEdge);
         }
 
-        mockGraph.setAdjacentNodes();
-
         return mockGraph;
     }
 
@@ -130,6 +128,4 @@ public class MockData {
              return Objects.hash(node1)+Objects.hash(node2);
          }
      }
-
-
 }

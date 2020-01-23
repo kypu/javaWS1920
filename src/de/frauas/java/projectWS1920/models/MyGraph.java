@@ -1,6 +1,13 @@
 package de.frauas.java.projectWS1920.models;
 
-import java.util.*;
+import de.frauas.java.projectWS1920.Exceptions.NodeNotFoundException;
+import de.frauas.java.projectWS1920.Threads.ShortestPathThread;
+
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class MyGraph {
 
@@ -12,7 +19,7 @@ public class MyGraph {
     // if all weights are whole numbers the diameter must be too
     private int diameter;
     // if all nodes are connected to each other (directly or indirectly)
-    private boolean connected;
+    private boolean isConnected;
     public static final int DIAMETER_UNDEFINED = -1;
 
 
@@ -22,14 +29,13 @@ public class MyGraph {
         return nodes;
     }
 
-    // todo: delete this method?
-    public MyNode getNodeById(int myNodeId) {
+    public MyNode getNodeById(int myNodeId) throws NodeNotFoundException {
         for (MyNode currentNode : this.nodes) {
             if (currentNode.getNodeId() == myNodeId) {
                 return currentNode;
-            } // todo: else statement to return an exception if the node is not found
+            }
         }
-        return null;
+        throw new NodeNotFoundException(myNodeId);
     }
 
     public LinkedHashSet<MyEdge> getEdges() {
@@ -37,16 +43,18 @@ public class MyGraph {
     }
 
     public boolean getConnected() {
-        return connected;
+        return isConnected;
     }
 
     public int getDiameter() {
         return diameter;
     }
 
-    /** Iterates over the edges to set the adjacent nodes map in each node
-     */
-    public void setAdjacentNodes() {
+    public void setConnected(boolean connected) {
+        this.isConnected = connected;
+    }
+
+    private void setAdjacentNodes() {
         for (MyEdge edge : this.edges) {
             edge.getDestinationNode().addAdjacent(edge.getOriginNode(), edge.getWeight());
             edge.getOriginNode().addAdjacent(edge.getDestinationNode(), edge.getWeight());
@@ -64,71 +72,64 @@ public class MyGraph {
     }
 
 
-    // FOR SHORTEST PATH CALCULATION
-  
-    /** Main method for calculating shortest paths. Some functionalities have been outsourced into smaller methods
-     *  for better readability (setAdjacentNodes, initialiseShortestPaths, getNodeWithSmallestShortestPath)
-     * @param originNode node from which all shortest paths should be calculated
+    // FOR INITIALISING GRAPH ATTRIBUTES
+
+    /**
+     * As soon as a graph is imported, all attributes must be calculated. The order is very important. Do not change!
      */
-    public void calculateShortestPathsFrom(MyNode originNode) {
-        // all nodes in the graph are added to unfinalised and removed later one by one
-        HashSet<MyNode> unfinalised = new HashSet<MyNode>(this.nodes);
-        // distance to origin node is set to 0 and all other nodes to infinity (Integer.MAX_VALUE)
-        initialiseShortestPaths(originNode);
+    public void initialiseGraphAttributes() {
+        setAdjacentNodes();
+        initialiseAllShortestPaths();
+        setDiameter();
+        for (MyNode node : nodes) {
+            calculateBetweennessCentralityOf(node);
+        }
+    }
 
-        while (!unfinalised.isEmpty()) {
-            MyNode nodeInProgress = getNodeWithSmallestShortestPath(originNode, unfinalised);
-            // if the shortest path left in unfinalised is infinity, the rest of the nodes must not be connected to the origin.
-            if (originNode.getShortestPathLengthTo(nodeInProgress) == Integer.MAX_VALUE) {
-                this.connected = false;
-                return;
+    /**
+     * Creates a thread pool with one shortestPathThread per node.
+     * After shutdown we need to wait with awaitTermination (returns boolean) for all threads to have been completed
+     */
+    private void initialiseAllShortestPaths() {
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
+        for (MyNode originNode : this.nodes) {
+            ShortestPathThread thread = new ShortestPathThread(this, originNode);
+            executor.execute(thread);
+        }
+        executor.shutdown();
+        // waits for 10 seconds to complete all threads. If it takes longer 10 seconds, force shutdown and error message
+        try {
+            if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
             }
-            // we check all the adjacent nodes to our nodeInProgress to see if we can make an improvement
-            for (MyNode adjacentToNodeInProgress : nodeInProgress.getAdjacentNodes().keySet()) {
-                int currentPathLength = originNode.getShortestPathLengths().get(adjacentToNodeInProgress);
-                int pathLengthViaNodeInProgress = originNode.getShortestPathLengths().get(nodeInProgress) +
-                        nodeInProgress.getAdjacentNodes().get(adjacentToNodeInProgress);
-                // when true, a smaller shortest path has been found and the previous node should be replaced
-                if (currentPathLength > pathLengthViaNodeInProgress) {
-                    originNode.updateShortestPath(adjacentToNodeInProgress, pathLengthViaNodeInProgress);
-                    originNode.addPreviousNode(adjacentToNodeInProgress, nodeInProgress, true);
+        } catch (InterruptedException ex) {
+            executor.shutdownNow();
+            Thread.currentThread().interrupt();
+            // todo: log error information
+        }
+    }
+
+    /**
+     * Diameter D of a Graph is defined as the longest path of the shortest paths between any two nodes.
+     * If the graph is not connected, then the diameter is undefined (-1)
+     */
+    private void setDiameter() {
+        int maxShortestDistance = 0;
+        //choose one node from all nodes
+        for (MyNode currentNode : getNodes()) {
+            for (MyNode node : getNodes()) {
+                int pathLength = currentNode.getShortestPathLengthTo(node);
+                if(pathLength>maxShortestDistance) {
+                    maxShortestDistance = pathLength;
                 }
-                // when true, an equal shortest path has been found. Previous node should be added without replacing the old one
-                else if (currentPathLength == pathLengthViaNodeInProgress) {
-                    originNode.addPreviousNode(adjacentToNodeInProgress, nodeInProgress, false);
-                }
-            }
-            unfinalised.remove(nodeInProgress);
-        }
-        // if we make it out of the while loop, then a shortest path exists to all nodes so the graph must be connected
-        this.connected = true;
-    }
-
-    private void initialiseShortestPaths(MyNode originNode) {
-        for (MyNode currentNode : this.nodes) {
-            if (currentNode == originNode) {
-                originNode.updateShortestPath(currentNode, 0);
-            } else {
-                originNode.updateShortestPath(currentNode, Integer.MAX_VALUE);
             }
         }
-    }
-
-    private MyNode getNodeWithSmallestShortestPath(MyNode originNode, HashSet<MyNode> unfinalisedNodes) {
-        // todo: if (unvisitedNodes is empty) { exception thrown }
-        // initialise this to something? Are the nodes with 0 id?
-        MyNode NodeWithSmallestShortestPath = originNode; // or don't initialise here and check before return;
-        int smallestShortestPath = Integer.MAX_VALUE;
-        for (MyNode currentNode : unfinalisedNodes) {
-            if (originNode.getShortestPathLengths().get(currentNode) <= smallestShortestPath) {
-                smallestShortestPath = originNode.getShortestPathLengths().get(currentNode);
-                NodeWithSmallestShortestPath = currentNode;
-            }
+        //if the diameter length is infinity, then return -1, meaning that there is no diameter
+        if(maxShortestDistance==Integer.MAX_VALUE) {
+            diameter = DIAMETER_UNDEFINED;
         }
-        return NodeWithSmallestShortestPath;
+        else { diameter=maxShortestDistance; }
     }
-
-    // METHODS FOR CALCULATING BETWEENNESS CENTRALITY
 
     /** Returns the betweenness centrality of a given node in the following steps:
      * 1. for every node other than the centralNode, the shortest paths to all other nodes need to be calculated (first for-loop)
@@ -139,15 +140,15 @@ public class MyGraph {
      * @param centralNode the node for which we calculate the betweenness centrality
      * @return the betweenness centrality
      */
-    public void calculateBetweennessCentralityOf(MyNode centralNode) {
+    private void calculateBetweennessCentralityOf(MyNode centralNode) {
         double betweennessCentrality = 0.0;
-        for (MyNode originNode : this.nodes) {
+        for (MyNode originNode : nodes) {
             if (originNode.equals(centralNode)) {
                 continue;
             }
             //only check the destination nodes which are connected to the originNode because
             //unconnected nodes add 0 to the betweenness centrality anyway and otherwise we would divide by 0
-            for (MyNode destinationNode : this.nodes) {
+            for (MyNode destinationNode : nodes) {
                 if (destinationNode.equals(centralNode) || destinationNode.equals(originNode) ||
                         (originNode.getShortestPathLengthTo(destinationNode)==Integer.MAX_VALUE)) {
                     continue;
@@ -174,28 +175,6 @@ public class MyGraph {
             if (path.contains(includedNode)) { numberPaths++; }
         }
         return numberPaths;
-    }
-
-    /**
-     *Diameter D of a Graph is defined as the longest path of the shortest paths between any two nodes.
-     * If the graph is not connected, then the diameter is undefined (-1)
-     */
-    public void setDiameter() {
-        int maxShortestDistance = 0;
-        //choose one node from all nodes
-        for (MyNode currentNode : getNodes()) {
-            for (MyNode node : getNodes()) {
-                int pathLength = currentNode.getShortestPathLengthTo(node);
-                if(pathLength>maxShortestDistance) {
-                    maxShortestDistance = pathLength;
-                }
-            }
-        }
-        //if the diameter length is infinity, then return -1, meaning that there is no diameter
-        if(maxShortestDistance==Integer.MAX_VALUE) {
-            diameter = DIAMETER_UNDEFINED;
-        }
-        else { diameter=maxShortestDistance; }
     }
 
 }
