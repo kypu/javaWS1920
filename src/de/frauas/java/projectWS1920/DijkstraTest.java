@@ -1,5 +1,6 @@
 package de.frauas.java.projectWS1920;
 
+import de.frauas.java.projectWS1920.Exceptions.NodeNotFoundException;
 import de.frauas.java.projectWS1920.application.MockData;
 import de.frauas.java.projectWS1920.models.MyGraph;
 import org.junit.jupiter.api.Test;
@@ -21,13 +22,14 @@ public class DijkstraTest {
     }
 
     @Test
-    void multiplePaths_Test() {
+    void multiplePaths_Test() throws NodeNotFoundException {
         // arrange
         MyGraph multiplePathsTestGraph = MockData.createMockGraphMultipleShortestPaths();
         // act
         multiplePathsTestGraph.initialiseGraphAttributes();
         // assert
-        assertEquals(2, multiplePathsTestGraph);
+        assertEquals(2, multiplePathsTestGraph.getNodeById(1)
+                .getDirectionsTo(multiplePathsTestGraph.getNodeById(4)).size());
     }
 }
 
