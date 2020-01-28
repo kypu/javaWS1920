@@ -33,7 +33,7 @@ public class Application
 
         System.out.println("Diameter: " + readInGraph.getDiameter());
 
-
+        System.out.println(GraphML.exportData("src/de/frauas/java/projectWS1920/resources/testExport.graphml", readInGraph));
         /*
         // load mock data to test before we finish parsing the graph
         Graph mockGraph = MockData.createRandomMockGraph(10);
