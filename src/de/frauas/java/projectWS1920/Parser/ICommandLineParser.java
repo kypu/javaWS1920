@@ -7,8 +7,7 @@ import org.apache.commons.cli.ParseException;
 
 import java.io.FileNotFoundException;
 
-public interface ICommandLineParser
-{
+public interface ICommandLineParser {
     CommandLine parseArguments(String[] args) throws ParseException;
     Options getOptions();
     void printHelp();

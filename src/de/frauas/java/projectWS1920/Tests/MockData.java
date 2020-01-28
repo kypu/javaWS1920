@@ -1,8 +1,8 @@
-package de.frauas.java.projectWS1920.application;
+package de.frauas.java.projectWS1920.Tests;
 
-import de.frauas.java.projectWS1920.models.MyEdge;
-import de.frauas.java.projectWS1920.models.MyGraph;
-import de.frauas.java.projectWS1920.models.MyNode;
+import de.frauas.java.projectWS1920.Models.MyEdge;
+import de.frauas.java.projectWS1920.Models.MyGraph;
+import de.frauas.java.projectWS1920.Models.MyNode;
 
 import java.util.*;
 
@@ -114,6 +114,7 @@ public class MockData {
         Random r = new Random();
         return r.nextInt((max - min) + 1) + min;
     }
+
      static class Tuple{
         private MyNode node1;
         private MyNode node2;

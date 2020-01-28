@@ -1,20 +1,18 @@
 //Java group 26
-package de.frauas.java.projectWS1920.application;
+package de.frauas.java.projectWS1920.Application;
 
-import de.frauas.java.projectWS1920.Dao.GraphML;
-import de.frauas.java.projectWS1920.models.MyGraph;
-import de.frauas.java.projectWS1920.models.MyNode;
-import de.frauas.java.projectWS1920.resources.Resource;
+import de.frauas.java.projectWS1920.DataAccessObject.GraphML;
+import de.frauas.java.projectWS1920.Models.MyGraph;
+import de.frauas.java.projectWS1920.Models.MyNode;
+import de.frauas.java.projectWS1920.Resources.Resource;
 
 
-public class Application
-{
+public class Application {
 
-    public static void main(String[] args) throws Exception
-    {
+    public static void main(String[] args) throws Exception {
         String fn = "small_graph.graphml";
         String[] testArgs = new String[]{ Resource.getFilepath() + fn, "-a", "Test"};
-        var app = new CLApplication();
+        var app = new CommandLineApplication();
         app.run(testArgs);
 
         MyGraph readInGraph = GraphML.importData(Resource.getFilepath() + "large_graph.graphml");

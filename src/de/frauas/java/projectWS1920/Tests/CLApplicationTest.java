@@ -1,8 +1,6 @@
-package de.frauas.java.projectWS1920.application.Tests;
+package de.frauas.java.projectWS1920.Tests;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CLApplicationTest
 {
@@ -13,8 +11,7 @@ class CLApplicationTest
     public String nOpt = "--allcalc";
 
     @Test
-    void run_ValidShortestPath_Test()
-    {
+    void run_ValidShortestPath_Test() {
         //arrange
 
         //act
@@ -23,8 +20,7 @@ class CLApplicationTest
     }
 
     @Test
-    void run_ValidBCM_Test()
-    {
+    void run_ValidBCM_Test() {
         //arrange
 
         //act
@@ -33,8 +29,7 @@ class CLApplicationTest
     }
 
     @Test
-    void run_ValidAllCalc_Test()
-    {
+    void run_ValidAllCalc_Test() {
         //arrange
 
         //act
@@ -43,8 +38,7 @@ class CLApplicationTest
     }
 
     @Test
-    void run_NoArgumentsError_Test()
-    {
+    void run_NoArgumentsError_Test() {
         //arrange
 
         //act
@@ -54,8 +48,7 @@ class CLApplicationTest
 
 
     @Test
-    void run_NoValidFilePath_Test()
-    {
+    void run_NoValidFilePath_Test() {
         //arrange
 
         //act
@@ -64,8 +57,7 @@ class CLApplicationTest
     }
 
     @Test
-    void run_InvalidOpenFilePath_Test()
-    {
+    void run_InvalidOpenFilePath_Test() {
         //arrange
 
         //act
@@ -74,8 +66,7 @@ class CLApplicationTest
     }
 
     @Test
-    void run_InvalidCloseFilePath_Test()
-    {
+    void run_InvalidCloseFilePath_Test() {
         //arrange
 
         //act
@@ -84,8 +75,7 @@ class CLApplicationTest
     }
 
     @Test
-    void run_NoParameterForOption_Test()
-    {
+    void run_NoParameterForOption_Test() {
         //arrange
 
         //act
@@ -94,8 +84,7 @@ class CLApplicationTest
     }
 
     @Test
-    void run_MoreThanOneOption_Test()
-    {
+    void run_MoreThanOneOption_Test() {
         //arrange
 
         //act

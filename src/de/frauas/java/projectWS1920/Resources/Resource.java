@@ -1,4 +1,4 @@
-package de.frauas.java.projectWS1920.resources;
+package de.frauas.java.projectWS1920.Resources;
 
 import org.apache.commons.io.FilenameUtils;
 

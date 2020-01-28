@@ -1,4 +1,4 @@
-package de.frauas.java.projectWS1920.models;
+package de.frauas.java.projectWS1920.Models;
 
 import de.frauas.java.projectWS1920.Exceptions.NodeNotFoundException;
 import de.frauas.java.projectWS1920.Threads.ShortestPathThread;
@@ -54,14 +54,6 @@ public class MyGraph {
         this.isConnected = connected;
     }
 
-    private void setAdjacentNodes() {
-        for (MyEdge edge : this.edges) {
-            edge.getDestinationNode().addAdjacent(edge.getOriginNode(), edge.getWeight());
-            edge.getOriginNode().addAdjacent(edge.getDestinationNode(), edge.getWeight());
-        }
-    }
-
-
     // FOR POPULATING MOCK GRAPHS
 
     public void addNode(MyNode newNode) {
@@ -78,11 +70,18 @@ public class MyGraph {
      * As soon as a graph is imported, all attributes must be calculated. The order is very important. Do not change!
      */
     public void initialiseGraphAttributes() {
-        setAdjacentNodes();
+        initialiseAdjacentNodes();
         initialiseAllShortestPaths();
-        setDiameter();
+        calculateDiameter();
         for (MyNode node : nodes) {
             calculateBetweennessCentralityOf(node);
+        }
+    }
+
+    private void initialiseAdjacentNodes() {
+        for (MyEdge edge : this.edges) {
+            edge.getDestinationNode().addAdjacent(edge.getOriginNode(), edge.getWeight());
+            edge.getOriginNode().addAdjacent(edge.getDestinationNode(), edge.getWeight());
         }
     }
 
@@ -113,7 +112,7 @@ public class MyGraph {
      * Diameter D of a Graph is defined as the longest path of the shortest paths between any two nodes.
      * If the graph is not connected, then the diameter is undefined (-1)
      */
-    private void setDiameter() {
+    private void calculateDiameter() {
         int maxShortestDistance = 0;
         //choose one node from all nodes
         for (MyNode currentNode : getNodes()) {

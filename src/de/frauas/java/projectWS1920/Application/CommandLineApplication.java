@@ -1,6 +1,6 @@
-package de.frauas.java.projectWS1920.application;
+package de.frauas.java.projectWS1920.Application;
 
-import de.frauas.java.projectWS1920.Bc.Validate;
+import de.frauas.java.projectWS1920.BusinessControl.Validate;
 import de.frauas.java.projectWS1920.Parser.ICommandLineParser;
 import org.apache.commons.cli.*;
 //import org.apache.commons.lang3.ArrayUtils;
@@ -8,12 +8,9 @@ import org.apache.commons.cli.*;
 
 import java.util.Arrays;
 
-public class CLApplication<P>
-{
-    public void run(String[] args)
-    {
-        try
-        {
+public class CommandLineApplication<P> {
+    public void run(String[] args) {
+        try {
             ICommandLineParser argumentParser;
 
             String filePath = args[0];
@@ -26,8 +23,7 @@ public class CLApplication<P>
             System.out.println("file path: " + filePath);
             System.out.println("option value: " + line.getOptionValue("a"));
             //if line.hasOption(..)
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             /*
             System.err.println("Failed to parse command line arguments");
             System.err.println(ex.toString());
@@ -45,18 +41,15 @@ public class CLApplication<P>
 
         CommandLineParser parser = new DefaultParser();
 
-        try
-        {
+        try {
             line = parser.parse(options, args);
-        } catch (ParseException ex)
-        {
+        } catch (ParseException ex) {
             throw ex;
         }
         return line;
     }
 
-    private Options getOptions()
-    {
+    private Options getOptions() {
         var options = new Options();
 
         Option shortestPathOption = new Option("s", "shortestpath", true,
@@ -76,8 +69,7 @@ public class CLApplication<P>
         return options;
     }
 
-    private void printHelp()
-    {
+    private void printHelp() {
         Options options = getOptions();
 
         var formatter = new HelpFormatter();

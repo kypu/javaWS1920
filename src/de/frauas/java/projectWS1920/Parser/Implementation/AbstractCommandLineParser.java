@@ -1,14 +1,12 @@
 package de.frauas.java.projectWS1920.Parser.Implementation;
 
-import de.frauas.java.projectWS1920.Bc.Validate;
+import de.frauas.java.projectWS1920.BusinessControl.Validate;
 import de.frauas.java.projectWS1920.Exceptions.ValidationException;
 import de.frauas.java.projectWS1920.Parser.ICommandLineParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-
-import java.io.FileNotFoundException;
 
 public abstract class AbstractCommandLineParser implements ICommandLineParser
 {

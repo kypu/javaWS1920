@@ -1,7 +1,6 @@
 package de.frauas.java.projectWS1920.Exceptions;
 
-public class ValidationException extends Exception
-{
+public class ValidationException extends Exception {
     public ValidationException()
     {
         super();

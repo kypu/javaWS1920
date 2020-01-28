@@ -1,4 +1,4 @@
-package de.frauas.java.projectWS1920.models;
+package de.frauas.java.projectWS1920.Models;
 
 import java.util.HashMap;
 import java.util.LinkedList;

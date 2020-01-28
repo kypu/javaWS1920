@@ -2,29 +2,24 @@ package de.frauas.java.projectWS1920.Parser.Implementation;
 
 import org.apache.commons.cli.*;
 
-public class OperationParser extends AbstractCommandLineParser
-{
+public class OperationParser extends AbstractCommandLineParser {
     @Override
-    public CommandLine parseArguments(String[] args) throws ParseException
-    {
+    public CommandLine parseArguments(String[] args) throws ParseException {
         Options options = getOptions();
         CommandLine line = null;
 
         CommandLineParser parser = new DefaultParser();
 
-        try
-        {
+        try {
             line = parser.parse(options, args);
-        } catch (ParseException ex)
-        {
+        } catch (ParseException ex) {
             throw ex;
         }
         return line;
     }
 
     @Override
-    public Options getOptions()
-    {
+    public Options getOptions() {
         var options = new Options();
 
         Option shortestPathOption = new Option("s", "shortestpath", true,
