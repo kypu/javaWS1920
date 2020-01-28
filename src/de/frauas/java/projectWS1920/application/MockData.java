@@ -9,6 +9,9 @@ import java.util.*;
 
 public class MockData {
 
+    /**
+     * @return an unconnected graph for testing
+     */
     public static MyGraph createMockGraphUnconnected() {
         MyNode node1 = new MyNode(1);
         MyNode node2 = new MyNode(2);
@@ -28,6 +31,9 @@ public class MockData {
         return mockGraph;
     }
 
+    /**
+     * @return a connected graph with multiple shortest paths from node 1 to node 4 for testing
+     */
     public static MyGraph createMockGraphMultipleShortestPaths() {
         MyNode node1 = new MyNode(1);
         MyNode node2 = new MyNode(2);
@@ -51,6 +57,11 @@ public class MockData {
         return mockGraph;
     }
 
+    /**
+     * todo: comment missing, method too long - add private addGivenNumberNodes and addRandomEdge method?
+     * @param numOfNodes
+     * @return
+     */
     public static MyGraph createRandomMockGraph(int numOfNodes) {
 
         int maxEdges=numOfNodes*(numOfNodes-1)/2;
@@ -90,8 +101,6 @@ public class MockData {
            mockGraph.addEdge(randomEdge);
         }
 
-        mockGraph.setAdjacentNodes();
-
         return mockGraph;
     }
 
@@ -130,6 +139,4 @@ public class MockData {
              return Objects.hash(node1)+Objects.hash(node2);
          }
      }
-
-
 }

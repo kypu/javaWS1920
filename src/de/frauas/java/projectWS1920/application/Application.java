@@ -9,6 +9,7 @@ import de.frauas.java.projectWS1920.resources.Resource;
 
 public class Application
 {
+
     public static void main(String[] args) throws Exception
     {
         String fn = "small_graph.graphml";
@@ -16,27 +17,12 @@ public class Application
         var app = new CLApplication();
         app.run(testArgs);
 
-        MyGraph readInGraph = GraphML.importData(Resource.getFilepath() + "small_graph.graphml");
+        MyGraph readInGraph = GraphML.importData(Resource.getFilepath() + "large_graph.graphml");
         /*
         Boolean didItWork = GraphML.exportData(Resource.getFilepath() + "attempt.graphml", readInGraph);
         if (didItWork) System.out.println("Success!");*/
 
-      
-        // set attributes in the graph we just read in. This must be done first (before betweenness centrality is calculated)
-        readInGraph.setAdjacentNodes();
-        // todo: this could be threaded?
-        for (MyNode originNode : readInGraph.getNodes()) {
-            readInGraph.calculateShortestPathsFrom(originNode);
-            for (MyNode destinationNode : readInGraph.getNodes()) {
-                originNode.calculateDirectionsTo(destinationNode);
-            }
-        }
-
-        for (MyNode node : readInGraph.getNodes()) {
-            readInGraph.calculateBetweennessCentralityOf(node);
-        }
-
-        readInGraph.setDiameter();
+        readInGraph.initialiseGraphAttributes();
 
         // output betweenness centrality
         for (MyNode node : readInGraph.getNodes()) {

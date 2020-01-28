@@ -143,10 +143,10 @@ public class MyNode {
         }
     }
 
-    public void print(){
-        System.out.println("Node Id: " + nodeId);
+    @Override
+    public String toString() {
+        return "Node{Id=" + nodeId + "}";
     }
-
 }
 
 
