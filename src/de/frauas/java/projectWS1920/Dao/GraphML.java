@@ -102,6 +102,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
                 //Sets the vertex property name and value
                 //The property "v_id" is saved as Integer
                 convertedVertex.setProperty("v_id", node.getNodeId());
+                convertedVertex.setProperty("betw_centrality", node.getBetweennessCentrality());
             }
 
             for (MyEdge edge : edgesToExport)
@@ -119,6 +120,8 @@ public class GraphML //<N, E> implements IGraphML<N, E>
                 convertedEdge.setProperty("e_weight", edge.getWeight());
                 convertedEdge.setProperty("e_id", edge.getEdgeId());
             }
+            //TODO Use a valid xmlschema
+            //tinkerWriter.setXmlSchemaLocation("src/de/frauas/java/projectWS1920/resources/graphml_schema.xsd");
             tinkerWriter.outputGraph(outputStream);
             return true;
         } catch (IOException e) //add extra FileNotFoundException (subclass of IOException) for better logging?
