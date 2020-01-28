@@ -13,5 +13,7 @@ public class MyLogger
         logger.setUseParentHandlers(false); // turns off console logs
     }
 
+    //log to file
 
+    //log to console
 }
