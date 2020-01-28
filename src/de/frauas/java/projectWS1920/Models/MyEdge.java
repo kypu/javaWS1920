@@ -1,4 +1,4 @@
-package de.frauas.java.projectWS1920.models;
+package de.frauas.java.projectWS1920.Models;
 
 public class MyEdge {
     private int edgeId;
@@ -6,6 +6,7 @@ public class MyEdge {
     private MyNode destinationNode;
     private int weight;
 
+    // CONSTRUCTOR
     public MyEdge(int edgeId, MyNode originNode, MyNode destinationNode, int weight) {
         this.edgeId = edgeId;
         this.originNode = originNode;
@@ -13,6 +14,7 @@ public class MyEdge {
         this.weight = weight;
     }
 
+    // GETTERS AND SETTERS
     public int getEdgeId() {
         return edgeId;
     }

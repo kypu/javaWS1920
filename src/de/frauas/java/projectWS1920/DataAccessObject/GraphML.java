@@ -1,16 +1,18 @@
-package de.frauas.java.projectWS1920.Dao;
+package de.frauas.java.projectWS1920.DataAccessObject;
 
-import java.io.*;
-
-import com.tinkerpop.blueprints.*;
+import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.Edge;
+import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLWriter;
+import de.frauas.java.projectWS1920.BusinessControl.Validate;
+import de.frauas.java.projectWS1920.Models.MyEdge;
+import de.frauas.java.projectWS1920.Models.MyGraph;
+import de.frauas.java.projectWS1920.Models.MyNode;
 
-import de.frauas.java.projectWS1920.Bc.Validate;
-import de.frauas.java.projectWS1920.models.MyEdge;
-import de.frauas.java.projectWS1920.models.MyGraph;
-import de.frauas.java.projectWS1920.models.MyNode;
+import java.io.*;
 
 /*
 TODO:
@@ -76,12 +78,11 @@ public class GraphML //<N, E> implements IGraphML<N, E>
 
     /*
     Exports given Graph to .graphml file.
-    DOESN'T WORK YET. TODO.
+    DOESN'T WORK YET. TODO. this should not return a true/false value, instead only throw exception
+    (see clean code lecture)
      */
-    public static Boolean exportData(String filepath, MyGraph graph)
-    {
-        try
-        {
+    public static Boolean exportData(String filepath, MyGraph graph) {
+        try {
             Graph tinkerGraph = new TinkerGraph();
             GraphMLWriter tinkerWriter = new GraphMLWriter(tinkerGraph);
             OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(filepath));
@@ -89,8 +90,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
             Iterable<MyNode> nodesToExport = graph.getNodes();
             Iterable<MyEdge> edgesToExport = graph.getEdges();
 
-            for (MyNode node : nodesToExport)
-            {
+            for (MyNode node : nodesToExport) {
                 //converts the node ID from Integer to String
                 String nodeId=Integer.toString(node.getNodeId());
 
@@ -105,8 +105,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
                 convertedVertex.setProperty("betw_centrality", node.getBetweennessCentrality());
             }
 
-            for (MyEdge edge : edgesToExport)
-            {
+            for (MyEdge edge : edgesToExport) {
                 //converts the OriginNodeID from Integer to String
                 String sourceId="n"+Integer.toString(edge.getOriginNode().getNodeId());
                 //converts the DestinationNodeID from Integer to String
@@ -124,8 +123,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
             //tinkerWriter.setXmlSchemaLocation("src/de/frauas/java/projectWS1920/resources/graphml_schema.xsd");
             tinkerWriter.outputGraph(outputStream);
             return true;
-        } catch (IOException e) //add extra FileNotFoundException (subclass of IOException) for better logging?
-        {
+        } catch (IOException e) { //add extra FileNotFoundException (subclass of IOException) for better logging?
             e.printStackTrace();
         }
         return false;

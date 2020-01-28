@@ -1,11 +1,10 @@
-package de.frauas.java.projectWS1920;
+package de.frauas.java.projectWS1920.Tests;
 
 import de.frauas.java.projectWS1920.Exceptions.NodeNotFoundException;
-import de.frauas.java.projectWS1920.application.MockData;
-import de.frauas.java.projectWS1920.models.MyGraph;
+import de.frauas.java.projectWS1920.Models.MyGraph;
 import org.junit.jupiter.api.Test;
 
-import static de.frauas.java.projectWS1920.models.MyGraph.DIAMETER_UNDEFINED;
+import static de.frauas.java.projectWS1920.Models.MyGraph.DIAMETER_UNDEFINED;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DijkstraTest {

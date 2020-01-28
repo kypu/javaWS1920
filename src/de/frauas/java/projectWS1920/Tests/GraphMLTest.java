@@ -1,14 +1,14 @@
-package de.frauas.java.projectWS1920.Dao.Tests;
+package de.frauas.java.projectWS1920.Tests;
 
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
-import de.frauas.java.projectWS1920.models.MyGraph;
-import de.frauas.java.projectWS1920.models.MyEdge;
-import de.frauas.java.projectWS1920.models.MyNode;
-import de.frauas.java.projectWS1920.Bc.Validate;
-import de.frauas.java.projectWS1920.Dao.GraphML;
-import de.frauas.java.projectWS1920.resources.Resource;
+import de.frauas.java.projectWS1920.Models.MyGraph;
+import de.frauas.java.projectWS1920.Models.MyEdge;
+import de.frauas.java.projectWS1920.Models.MyNode;
+import de.frauas.java.projectWS1920.BusinessControl.Validate;
+import de.frauas.java.projectWS1920.DataAccessObject.GraphML;
+import de.frauas.java.projectWS1920.Resources.Resource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,8 +26,7 @@ class GraphMLTest
     Small_graph.graphml contains nodes with id ranging from 0 - 14
     */
     @Test
-    void importData_NodesAvailability_Test() throws Exception
-    {
+    void importData_NodesAvailability_Test() throws Exception {
         assertTrue(Validate.isFile(testPath));
 
         // arrange
@@ -37,8 +36,7 @@ class GraphMLTest
 
         // assert
         // Check if all node ids are correct and range from 0 - 14
-        for (Integer i = 0; i <= 14; i++)
-        {
+        for (Integer i = 0; i <= 14; i++) {
             assertNotNull(testeeGraph.getNodeById(i));
         }
 
@@ -51,8 +49,7 @@ class GraphMLTest
     Small_graph.graphml contains edges with id ranging from 0 - 27
      */
     @Test
-    void importData_EdgesAvailability_Test() throws Exception
-    {
+    void importData_EdgesAvailability_Test() throws Exception {
         assertTrue(Validate.isFile(testPath));
 
         // arrange
@@ -62,8 +59,7 @@ class GraphMLTest
 
         // assert
         // Check if all node ids are correct and range from 0 - 14
-        for (MyEdge edge : testeeGraph.getEdges())
-        {
+        for (MyEdge edge : testeeGraph.getEdges()) {
             assertTrue(edge.getEdgeId() <= 27);
         }
 
@@ -75,8 +71,7 @@ class GraphMLTest
     Checks if all an example edge has been read in and stored correctly.
      */
     @Test
-    void importData_EdgeExample_Test() throws Exception
-    {
+    void importData_EdgeExample_Test() throws Exception {
         // arrange
         MyEdge exampleEdge = new MyEdge(
                 0,
@@ -103,10 +98,8 @@ class GraphMLTest
      * @return Edge with the id you're looking for in given graph. If not found, returns null.
      */
     @Nullable
-    private MyEdge getEdgeByIdHelper(MyGraph graph, Integer edgeId)
-    {
-        for (MyEdge edge : graph.getEdges())
-        {
+    private MyEdge getEdgeByIdHelper(MyGraph graph, Integer edgeId) {
+        for (MyEdge edge : graph.getEdges()) {
             if (edge.getEdgeId() == edgeId) return edge;
         }
         return null;

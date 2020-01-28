@@ -1,7 +1,7 @@
 package de.frauas.java.projectWS1920.Threads;
 
-import de.frauas.java.projectWS1920.models.MyGraph;
-import de.frauas.java.projectWS1920.models.MyNode;
+import de.frauas.java.projectWS1920.Models.MyGraph;
+import de.frauas.java.projectWS1920.Models.MyNode;
 
 import java.util.HashSet;
 
