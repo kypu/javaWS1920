@@ -25,7 +25,7 @@ public class ShortestPathThread implements Runnable{
 
     /**
      * Main method for calculating shortest paths. Some functionalities have been outsourced into smaller methods
-     *  for better readability (setAdjacentNodes, initialiseShortestPaths, getNodeWithSmallestShortestPath)
+     *  for better readability (initialiseShortestPaths, getNodeWithSmallestShortestPath)
      * @param originNode node from which all shortest paths should be calculated
      */
     private void calculateShortestPathsFrom(MyNode originNode) {
