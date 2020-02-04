@@ -42,7 +42,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
             tinkerReader.setEdgeLabelKey("e_weight");
 
             tinkerReader.inputGraph(inputStream);
-
+            // todo logging
             Iterable<Vertex> vertices = tinkerGraph.getVertices();
             Iterable<Edge> edges = tinkerGraph.getEdges();
 
@@ -56,6 +56,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
 
                 convertedGraph.addNode(nodeToAdd);
             }
+            //todo logging
 
             // convert given edges to my type
             for (Edge edge : edges)
@@ -73,8 +74,10 @@ public class GraphML //<N, E> implements IGraphML<N, E>
                 );
                 convertedGraph.addEdge(edgeToAdd);
             }
+            //todo logging
         } //end of if
         return convertedGraph;
+        //todo logging
     } //end of method: importData()
 
     /*
@@ -111,6 +114,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
                 }
                 convertedVertex.setProperty("shortestPaths", shortestPathString);
             }
+            //todo logging
 
             for (MyEdge edge : edgesToExport) {
                 //converts the OriginNodeID from Integer to String
@@ -126,9 +130,10 @@ public class GraphML //<N, E> implements IGraphML<N, E>
                 convertedEdge.setProperty("e_weight", edge.getWeight());
                 convertedEdge.setProperty("e_id", edge.getEdgeId());
             }
-            //TODO Use a valid xmlschema
-            //tinkerWriter.setXmlSchemaLocation("src/de/frauas/java/projectWS1920/resources/graphml_schema.xsd");
+            //Todo logging
+
             tinkerWriter.outputGraph(outputStream);
+            //TODO logging
             return true;
         } catch (IOException e) { //add extra FileNotFoundException (subclass of IOException) for better logging?
             e.printStackTrace();

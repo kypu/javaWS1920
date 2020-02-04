@@ -72,8 +72,11 @@ public class MyGraph {
      */
     public void initialiseBasicGraphAttributes() {
         initialiseAdjacentNodes();
+        //todo logging
         initialiseAllShortestPaths(false);
+        //todo logging
         calculateDiameter();
+        // todo logging
     }
 
     /**
@@ -84,6 +87,7 @@ public class MyGraph {
     public void initialiseAttributesShortestPath(MyNode originNode, MyNode destinationNode) {
         initialiseBasicGraphAttributes();
         originNode.calculateDirectionsTo(destinationNode);
+        // todo logging
     }
 
     /**
@@ -92,8 +96,11 @@ public class MyGraph {
      */
     public void initialiseAttributesBetweennessCentrality(MyNode centralNode) {
         initialiseAdjacentNodes();
+        // todo logging
         initialiseAllShortestPaths(true);
+        // todo logging
         calculateDiameter();
+        // todo logging
     }
 
     private void initialiseAdjacentNodes() {
