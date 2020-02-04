@@ -5,7 +5,7 @@ import de.frauas.java.projectWS1920.DataAccessObject.GraphML;
 import de.frauas.java.projectWS1920.Models.MyGraph;
 import de.frauas.java.projectWS1920.Models.MyNode;
 import de.frauas.java.projectWS1920.Resources.Resource;
-
+import java.util.HashMap;
 
 public class Application {
 
@@ -15,16 +15,26 @@ public class Application {
         var app = new CommandLineApplication();
         app.run(testArgs);
 
-        MyGraph readInGraph = GraphML.importData(Resource.getFilepath() + "large_graph.graphml");
+        MyGraph readInGraph = GraphML.importData(Resource.getFilepath() + "small_graph.graphml");
         /*
         Boolean didItWork = GraphML.exportData(Resource.getFilepath() + "attempt.graphml", readInGraph);
         if (didItWork) System.out.println("Success!");*/
 
         readInGraph.initialiseGraphAttributes();
 
+        //Output shortest paths
+        System.out.println("### Shortest paths ###");
+        for(MyNode node1 : readInGraph.getNodes()){
+            System.out.println("Source node '"+node1.getNodeId()+"':");
+            for(MyNode node2 : readInGraph.getNodes()){
+                System.out.println("To node '"+node2.getNodeId()+"': path -> " + node1.getDirectionsTo(node2) + "; length -> " + node1.getShortestPathLengthTo(node2));
+            }
+        }
+
         // output betweenness centrality
+        System.out.println("### Betweenness Centrality ###");
         for (MyNode node : readInGraph.getNodes()) {
-            System.out.println("Betweenness Centrality of Node " + node.getNodeId() + " is: " + node.getBetweennessCentrality());
+            System.out.println("Node '" + node.getNodeId() + "': " + node.getBetweennessCentrality());
         }
 
         System.out.println("Is graph connected? " + readInGraph.getConnected());

@@ -13,6 +13,7 @@ import de.frauas.java.projectWS1920.Models.MyGraph;
 import de.frauas.java.projectWS1920.Models.MyNode;
 
 import java.io.*;
+import java.lang.StringBuilder;
 
 /*
 TODO:
@@ -102,7 +103,13 @@ public class GraphML //<N, E> implements IGraphML<N, E>
                 //Sets the vertex property name and value
                 //The property "v_id" is saved as Integer
                 convertedVertex.setProperty("v_id", node.getNodeId());
-                convertedVertex.setProperty("betw_centrality", node.getBetweennessCentrality());
+                convertedVertex.setProperty("betweenness_centrality", node.getBetweennessCentrality());
+
+                StringBuilder shortestPathString = new StringBuilder("\nSource node '" + nodeId + "':\n");
+                for(MyNode dest_node : nodesToExport){
+                    shortestPathString.append("To node '"+dest_node.getNodeId()+"': path = " + node.getDirectionsTo(dest_node) + "; length = " + node.getShortestPathLengthTo(dest_node) + "\n");
+                }
+                convertedVertex.setProperty("shortestPaths", shortestPathString);
             }
 
             for (MyEdge edge : edgesToExport) {
