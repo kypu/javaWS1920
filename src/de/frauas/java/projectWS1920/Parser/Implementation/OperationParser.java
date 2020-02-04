@@ -28,12 +28,13 @@ public class OperationParser extends AbstractCommandLineParser {
                 "Betweenness centrality measure for given node.");
         Option allCalcOption = new Option("a", "allcalc", true,
                 "Calculate all above graph and save it into file.");
+        // + nur Dateiname auch Option
 
         OptionGroup operationGroup = new OptionGroup();
         operationGroup.addOption(shortestPathOption);
         operationGroup.addOption(betweennessOption);
         operationGroup.addOption(allCalcOption);
-        operationGroup.isRequired();
+        //operationGroup.isRequired();
 
         options.addOptionGroup(operationGroup);
         return options;

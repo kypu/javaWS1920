@@ -19,6 +19,7 @@ public class CommandLineApplication<P> {
             String[] argsSlice = Arrays.copyOfRange(args,1, args.length);
             CommandLine line = parseArguments(argsSlice);
 
+
             // Do da magic
             System.out.println("file path: " + filePath);
             System.out.println("option value: " + line.getOptionValue("a"));
