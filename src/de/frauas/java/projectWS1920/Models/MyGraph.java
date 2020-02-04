@@ -67,15 +67,33 @@ public class MyGraph {
     // FOR INITIALISING GRAPH ATTRIBUTES
 
     /**
+     * If only the input file is given
      * As soon as a graph is imported, all attributes must be calculated. The order is very important. Do not change!
      */
-    public void initialiseGraphAttributes() {
+    public void initialiseBasicGraphAttributes() {
         initialiseAdjacentNodes();
-        initialiseAllShortestPaths();
+        initialiseAllShortestPaths(false);
         calculateDiameter();
-        for (MyNode node : nodes) {
-            calculateBetweennessCentralityOf(node);
-        }
+    }
+
+    /**
+     * If an input file given and -s switch but not -b switch used
+     * @param originNode the first node after the switch -s
+     * @param destinationNode the second node after the switch -s
+     */
+    public void initialiseAttributesShortestPath(MyNode originNode, MyNode destinationNode) {
+        initialiseBasicGraphAttributes();
+        originNode.calculateDirectionsTo(destinationNode);
+    }
+
+    /**
+     * If an input file is given the -b switch is used (regardless of whether -s switch is used)
+     * @param centralNode the node following the -b switch
+     */
+    public void initialiseAttributesBetweennessCentrality(MyNode centralNode) {
+        initialiseAdjacentNodes();
+        initialiseAllShortestPaths(true);
+        calculateDiameter();
     }
 
     private void initialiseAdjacentNodes() {
@@ -88,11 +106,12 @@ public class MyGraph {
     /**
      * Creates a thread pool with one shortestPathThread per node.
      * After shutdown we need to wait with awaitTermination (returns boolean) for all threads to have been completed
+     * @param centralityRequired whether the paths should also be reconstructed
      */
-    private void initialiseAllShortestPaths() {
+    private void initialiseAllShortestPaths(boolean centralityRequired) {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
         for (MyNode originNode : this.nodes) {
-            ShortestPathThread thread = new ShortestPathThread(this, originNode);
+            ShortestPathThread thread = new ShortestPathThread(this, originNode, centralityRequired);
             executor.execute(thread);
         }
         executor.shutdown();

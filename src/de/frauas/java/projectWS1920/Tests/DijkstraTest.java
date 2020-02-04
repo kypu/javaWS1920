@@ -1,4 +1,4 @@
-package de.frauas.java.projectWS1920.Tests;
+/*package de.frauas.java.projectWS1920.Tests;
 
 import de.frauas.java.projectWS1920.Exceptions.NodeNotFoundException;
 import de.frauas.java.projectWS1920.Models.MyGraph;
@@ -33,3 +33,4 @@ public class DijkstraTest {
 }
 
 
+*/

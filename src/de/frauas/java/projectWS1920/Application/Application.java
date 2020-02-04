@@ -20,7 +20,7 @@ public class Application {
         Boolean didItWork = GraphML.exportData(Resource.getFilepath() + "attempt.graphml", readInGraph);
         if (didItWork) System.out.println("Success!");*/
 
-        readInGraph.initialiseGraphAttributes();
+        readInGraph.initialiseAttributesBetweennessCentrality(readInGraph.getNodeById(1));
 
         //Output shortest paths
         System.out.println("### Shortest paths ###");
@@ -29,12 +29,6 @@ public class Application {
             for(MyNode node2 : readInGraph.getNodes()){
                 System.out.println("To node '"+node2.getNodeId()+"': path -> " + node1.getDirectionsTo(node2) + "; length -> " + node1.getShortestPathLengthTo(node2));
             }
-        }
-
-        // output betweenness centrality
-        System.out.println("### Betweenness Centrality ###");
-        for (MyNode node : readInGraph.getNodes()) {
-            System.out.println("Node '" + node.getNodeId() + "': " + node.getBetweennessCentrality());
         }
 
         System.out.println("Is graph connected? " + readInGraph.getConnected());
