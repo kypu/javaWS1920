@@ -14,6 +14,11 @@ public class ConnectUI {
         this.logger = logger;
     }
 
+    /**
+     * Logs graph details to console and file.
+     * @param filePath Open file path of graphml file.
+     * @throws Exception Throws exception, if file can't be opened.
+     */
     public void logBasicGraphAttributes(String filePath) throws Exception {
         try {
             var importedGraph = GraphML.importData(filePath);
@@ -37,6 +42,12 @@ public class ConnectUI {
         }
     }
 
+    /**
+     * Logs the centrality of given node.
+     * @param filePath Graphml input file.
+     * @param centralNodeId Node after -b command line option.
+     * @throws Exception Throws exception, if file can't be opened.
+     */
     public void logBetweennessCentrality(String filePath, Integer centralNodeId) throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -54,6 +65,12 @@ public class ConnectUI {
         }
     }
 
+    /**
+     * Exports graph information to output file.
+     * @param filePath Graphml input file.
+     * @param outputFilePath Graphml output file.
+     * @throws Exception Throws exception, if file can't be opened.
+     */
     public void logCreateOutputFile(String filePath, String outputFilePath) throws Exception {
         try {
             var importedGraph = GraphML.importData(filePath);
@@ -65,6 +82,13 @@ public class ConnectUI {
         }
     }
 
+    /**
+     * Logs shortest path of given nodes.
+     * @param filePath Graphml input file.
+     * @param idSourceNode The first node id after -s command line option.
+     * @param idDestinationNode The second node id after -s command line option.
+     * @throws Exception Throws exception, if file can't be opened.
+     */
     public void logShortestPath(String filePath, Integer idSourceNode, Integer idDestinationNode) throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
         try {

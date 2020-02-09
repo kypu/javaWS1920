@@ -1,7 +1,6 @@
 package de.frauas.java.projectWS1920.Resources;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 
 public class Resource
 {
@@ -22,8 +21,7 @@ public class Resource
         "       `\\  / \\  /`\n" +
         "         `\\\\_//`";
 
-    private static final String logoName =
-        "";
+    public static String getLogoPicture(){ return logoPicture; }
 
     /**
      * Converts file path to resource folder based on OS that's used (differentiation between Windows and Unix)
@@ -32,9 +30,5 @@ public class Resource
     public static String getFilepath()
     {
         return FilenameUtils.separatorsToSystem(filepath);
-    }
-
-    public static String getFullLogo() {
-        return logoPicture + System.lineSeparator() + logoName;
     }
 }

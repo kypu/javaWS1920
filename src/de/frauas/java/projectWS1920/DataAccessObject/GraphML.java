@@ -19,7 +19,7 @@ import de.frauas.java.projectWS1920.Models.MyNode;
 public class GraphML {
 
     /**
-     *
+     * Imports given graphml file and converts to custom entities.
      * @param path Location of file.
      * @return Custom graph with data, that has been read in.
      * @throws Exception If file can't be accessed, throw exception.

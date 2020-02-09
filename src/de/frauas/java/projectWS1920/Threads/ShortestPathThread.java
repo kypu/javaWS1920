@@ -17,6 +17,9 @@ public class ShortestPathThread implements Runnable{
         this.isCentralityRequired = isCentralityRequired;
     }
 
+    /**
+     * Entry point to thread.
+     */
     @Override
     public void run() {
         calculateShortestPathsFrom(originNode);

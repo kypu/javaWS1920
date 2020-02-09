@@ -9,6 +9,12 @@ import java.nio.file.Paths;
 
 
 public class Validate {
+    /**
+     * Validates given file path.
+     * @param filePath File path to check.
+     * @return True if valid file path (for Tests).
+     * @throws ValidationException
+     */
     public static Boolean isFile(String filePath) throws ValidationException {
         try {
             File file = new File(filePath);
@@ -19,14 +25,4 @@ public class Validate {
         }
         return true;
     }
-
-    public static Boolean isPath(String filePath) throws ValidationException {
-        try {
-            Path path = Paths.get(filePath);
-            if (Files.notExists(path)) throw new ValidationException();
-        } catch (ValidationException ex) {
-            throw ex;
-        }
-        return true;
-    }
-} // end of class Validate
+}

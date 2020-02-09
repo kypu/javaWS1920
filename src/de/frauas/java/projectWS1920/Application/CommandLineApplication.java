@@ -2,6 +2,7 @@ package de.frauas.java.projectWS1920.Application;
 
 import de.frauas.java.projectWS1920.BusinessControl.ConnectUI;
 import de.frauas.java.projectWS1920.Parser.Implementation.OperationParser;
+import de.frauas.java.projectWS1920.Resources.Resource;
 import org.apache.commons.cli.*;
 import de.frauas.java.projectWS1920.BusinessControl.Validate;
 import de.frauas.java.projectWS1920.Logger.Implementation.MyLogger;
@@ -36,12 +37,13 @@ public class CommandLineApplication {
             // If only file path was given as argument.
             if (argsSlice.length == 0) {
                 connectUI.logBasicGraphAttributes(filePath);
+                logger.logToConsoleAndFile(Resource.getLogoPicture());
                 System.exit(0);
             }
 
             CommandLine line = operationParser.parseArguments(argsSlice);
 
-
+            // Actions for command line options
             if (line.hasOption("b")) {
                 var optionIntValue = Integer.parseInt(line.getOptionValue("b"));
                 connectUI.logBetweennessCentrality(filePath, optionIntValue);
@@ -58,11 +60,9 @@ public class CommandLineApplication {
                 connectUI.logShortestPath(filePath, idSourceNode, idDestinationNode);
                 System.exit(0);
             }
-        } catch (InterruptedException ex) {
-            logger.logToConsoleAndFile("Timeout during calculation of shortest paths.");
         } catch (Exception ex) {
             logger.logToConsoleAndFile("Program terminated due to invalid arguments.\r\n");
-            logger.logToFile(ex.getStackTrace().toString());
+            logger.logToFile(ex.getMessage());
             operationParser.printHelp();
         } finally {
             System.exit(0);

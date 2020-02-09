@@ -1,7 +1,6 @@
 package de.frauas.java.projectWS1920.Models;
 
 import de.frauas.java.projectWS1920.Exceptions.NodeNotFoundException;
-import de.frauas.java.projectWS1920.Logger.Implementation.MyLogger;
 import de.frauas.java.projectWS1920.Threads.ShortestPathThread;
 
 import java.util.LinkedHashSet;
