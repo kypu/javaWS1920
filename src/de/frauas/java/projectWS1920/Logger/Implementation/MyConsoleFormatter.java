@@ -14,7 +14,6 @@ public class MyConsoleFormatter extends AbstractMyFormatter {
     public String format(LogRecord record) {
         StringBuilder recordBuilder = new StringBuilder();
 
-        recordBuilder.append(ANSI_YELLOW);
         recordBuilder.append(record.getMessage());
 
         return recordBuilder.toString();

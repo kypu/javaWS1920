@@ -3,6 +3,8 @@ package de.frauas.java.projectWS1920.Application;
 
 import de.frauas.java.projectWS1920.Logger.Implementation.MyLogger;
 
+import java.io.File;
+
 
 public class Application {
 
