@@ -1,79 +1,71 @@
 package de.frauas.java.projectWS1920.Application;
 
-import de.frauas.java.projectWS1920.BusinessControl.Validate;
-import de.frauas.java.projectWS1920.Parser.ICommandLineParser;
+import de.frauas.java.projectWS1920.BusinessControl.ConnectUI;
+import de.frauas.java.projectWS1920.Parser.Implementation.OperationParser;
 import org.apache.commons.cli.*;
-//import org.apache.commons.lang3.ArrayUtils;
-//import org.apache.commons.math3.stat.StatUtils;
+import de.frauas.java.projectWS1920.BusinessControl.Validate;
+import de.frauas.java.projectWS1920.Logger.Implementation.MyLogger;
+import de.frauas.java.projectWS1920.Parser.ICommandLineParser;
+
 
 import java.util.Arrays;
 
-public class CommandLineApplication<P> {
-    public void run(String[] args) {
-        try {
-            ICommandLineParser argumentParser;
+public class CommandLineApplication {
+    private MyLogger logger;
+    private ConnectUI connectUI;
+    private ICommandLineParser operationParser;
 
-            String filePath = args[0];
+    CommandLineApplication(MyLogger logger) {
+        this.logger = logger;
+        connectUI = new ConnectUI(logger);
+        operationParser = new OperationParser();
+    }
+
+    /**
+     * Entry point to program.
+     * @param args Given command line arguments.
+     */
+    public void run(String[] args) {
+
+        try {
+            String filePath = operationParser.getOpenFilePath(args);
             Validate.isFile(filePath);
 
-            String[] argsSlice = Arrays.copyOfRange(args,1, args.length);
-            CommandLine line = parseArguments(argsSlice);
+            String[] argsSlice = Arrays.copyOfRange(args, 1, args.length);
+
+            // If only file path was given as argument.
+            if (argsSlice.length == 0) {
+                connectUI.logBasicGraphAttributes(filePath);
+                System.exit(0);
+            }
+
+            CommandLine line = operationParser.parseArguments(argsSlice);
 
 
-            // Do da magic
-            System.out.println("file path: " + filePath);
-            System.out.println("option value: " + line.getOptionValue("a"));
-            //if line.hasOption(..)
+            if (line.hasOption("b")) {
+                var optionIntValue = Integer.parseInt(line.getOptionValue("b"));
+                connectUI.logBetweennessCentrality(filePath, optionIntValue);
+                System.exit(0);
+            }
+            if (line.hasOption("a")) {
+                var optionOutputFilePath = line.getOptionValue("a");
+                connectUI.logCreateOutputFile(filePath, optionOutputFilePath);
+                System.exit(0);
+            }
+            if (line.hasOption("s")) {
+                var idSourceNode = Integer.parseInt(line.getOptions()[0].getValue(0));
+                var idDestinationNode = Integer.parseInt(line.getOptions()[0].getValue(1));
+                connectUI.logShortestPath(filePath, idSourceNode, idDestinationNode);
+                System.exit(0);
+            }
+        } catch (InterruptedException ex) {
+            logger.logToConsoleAndFile("Timeout during calculation of shortest paths.");
         } catch (Exception ex) {
-            /*
-            System.err.println("Failed to parse command line arguments");
-            System.err.println(ex.toString());
-            ex.printStackTrace();
-            printAppHelp();
-            */
-            System.out.println("Caught something, brother!");
-            System.exit(1);
+            logger.logToConsoleAndFile("Program terminated due to invalid arguments.\r\n");
+            logger.logToFile(ex.getStackTrace().toString());
+            operationParser.printHelp();
+        } finally {
+            System.exit(0);
         }
-    }
-
-    private CommandLine parseArguments(String[] args) throws ParseException {
-        Options options = getOptions();
-        CommandLine line = null;
-
-        CommandLineParser parser = new DefaultParser();
-
-        try {
-            line = parser.parse(options, args);
-        } catch (ParseException ex) {
-            throw ex;
-        }
-        return line;
-    }
-
-    private Options getOptions() {
-        var options = new Options();
-
-        Option shortestPathOption = new Option("s", "shortestpath", true,
-                "Shortest path between the two given vertices according to Dijkstra algorithm.");
-        Option betweennessOption = new Option("b", "bcm", true,
-                "Betweenness centrality measure for given node.");
-        Option allCalcOption = new Option("a", "allcalc", true,
-                "Calculate all above graph and save it into file.");
-
-        OptionGroup operationGroup = new OptionGroup();
-        operationGroup.addOption(shortestPathOption);
-        operationGroup.addOption(betweennessOption);
-        operationGroup.addOption(allCalcOption);
-        operationGroup.isRequired();
-
-        options.addOptionGroup(operationGroup);
-        return options;
-    }
-
-    private void printHelp() {
-        Options options = getOptions();
-
-        var formatter = new HelpFormatter();
-        formatter.printHelp("JavaStatsEx", options, true);
     }
 }

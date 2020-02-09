@@ -7,9 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-/*
-Needs refactoring.. ugly af
- */
+
 public class Validate {
     public static Boolean isFile(String filePath) throws ValidationException {
         try {

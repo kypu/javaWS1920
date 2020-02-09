@@ -7,31 +7,27 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLWriter;
+import java.io.*;
+import java.lang.StringBuilder;
 import de.frauas.java.projectWS1920.BusinessControl.Validate;
+import de.frauas.java.projectWS1920.Exceptions.ValidationException;
 import de.frauas.java.projectWS1920.Models.MyEdge;
 import de.frauas.java.projectWS1920.Models.MyGraph;
 import de.frauas.java.projectWS1920.Models.MyNode;
 
-import java.io.*;
-import java.lang.StringBuilder;
 
-/*
-TODO:
-- implement IGraphML methods
-- finish exportData() -> current problems are commented within the method itself
-- refactor importData() to satisfy interface
-- write integration test for exportData()
-- Lots of documentation missing!
- */
+public class GraphML {
 
-public class GraphML //<N, E> implements IGraphML<N, E>
-{
-    public static MyGraph importData(String path) throws Exception
-    {
+    /**
+     *
+     * @param path Location of file.
+     * @return Custom graph with data, that has been read in.
+     * @throws Exception If file can't be accessed, throw exception.
+     */
+    public static MyGraph importData(String path) throws Exception {
         MyGraph convertedGraph = new MyGraph();
 
-        if (Validate.isFile(path))
-        {
+        if (Validate.isFile(path)) {
             Graph tinkerGraph = new TinkerGraph();
             GraphMLReader tinkerReader = new GraphMLReader(tinkerGraph);
             InputStream inputStream = new BufferedInputStream(new FileInputStream(path));
@@ -47,8 +43,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
             Iterable<Edge> edges = tinkerGraph.getEdges();
 
             // convert given vertices to own type
-            for (Vertex vertex : vertices)
-            {
+            for (Vertex vertex : vertices) {
                 //Integer nodeId = (Integer) vertex.getId();
                 Integer nodeId = Integer.parseInt(vertex.getId().toString());
 
@@ -58,8 +53,7 @@ public class GraphML //<N, E> implements IGraphML<N, E>
             }
 
             // convert given edges to my type
-            for (Edge edge : edges)
-            {
+            for (Edge edge : edges) {
                 Integer eId = Integer.parseInt(edge.getId().toString());
                 Integer weight = Integer.parseInt(edge.getLabel());
                 Vertex target = edge.getVertex(Direction.IN);
@@ -73,16 +67,15 @@ public class GraphML //<N, E> implements IGraphML<N, E>
                 );
                 convertedGraph.addEdge(edgeToAdd);
             }
-        } //end of if
+        }
         return convertedGraph;
-    } //end of method: importData()
+    }
 
-    /*
-    Exports given Graph to .graphml file.
-    DOESN'T WORK YET. TODO. this should not return a true/false value, instead only throw exception
-    (see clean code lecture)
+    /**
+     * Exports data of custom graph to given file location.
+     * @throws IOException If data can't be written to given file.
      */
-    public static Boolean exportData(String filepath, MyGraph graph) {
+    public static void exportData(String filepath, MyGraph graph) throws IOException, ValidationException {
         try {
             Graph tinkerGraph = new TinkerGraph();
             GraphMLWriter tinkerWriter = new GraphMLWriter(tinkerGraph);
@@ -126,13 +119,9 @@ public class GraphML //<N, E> implements IGraphML<N, E>
                 convertedEdge.setProperty("e_weight", edge.getWeight());
                 convertedEdge.setProperty("e_id", edge.getEdgeId());
             }
-            //TODO Use a valid xmlschema
-            //tinkerWriter.setXmlSchemaLocation("src/de/frauas/java/projectWS1920/resources/graphml_schema.xsd");
             tinkerWriter.outputGraph(outputStream);
-            return true;
-        } catch (IOException e) { //add extra FileNotFoundException (subclass of IOException) for better logging?
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw e;
         }
-        return false;
     }
 }

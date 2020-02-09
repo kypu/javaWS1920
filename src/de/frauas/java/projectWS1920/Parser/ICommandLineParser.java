@@ -1,9 +1,9 @@
 package de.frauas.java.projectWS1920.Parser;
 
-import de.frauas.java.projectWS1920.Exceptions.ValidationException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import de.frauas.java.projectWS1920.Exceptions.ValidationException;
 
 import java.io.FileNotFoundException;
 

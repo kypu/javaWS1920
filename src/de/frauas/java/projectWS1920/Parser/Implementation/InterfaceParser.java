@@ -10,10 +10,10 @@ import org.apache.commons.cli.*;
  * be used to easily extend the program.
  */
 public class InterfaceParser extends AbstractCommandLineParser {
-    /*
-    TODO
-    just copy-pasted
-    does parseArguments() throw unique exceptions? If not, move to abstract layer
+    /**
+     * Sets up command line options. All of them share an OptionsGroup,
+     * which makes sure only one is used at a time.
+     * @return Command line argument Options.
      */
     @Override
     public CommandLine parseArguments(String[] args) throws ParseException {
@@ -30,6 +30,11 @@ public class InterfaceParser extends AbstractCommandLineParser {
         return line;
     }
 
+    /**
+     * Sets up command line options. All of them share an OptionsGroup,
+     * which makes sure only one is used at a time.
+     * @return Command line argument Options.
+     */
     @Override
     public Options getOptions() {
         var options = new Options();
@@ -46,5 +51,13 @@ public class InterfaceParser extends AbstractCommandLineParser {
 
         options.addOptionGroup(operationGroup);
         return options;
+    }
+
+    @Override
+    public void printHelp() {
+        Options options = getOptions();
+
+        var formatter = new HelpFormatter();
+        formatter.printHelp("", options, true);
     }
 }

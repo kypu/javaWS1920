@@ -1,6 +1,7 @@
 package de.frauas.java.projectWS1920.Models;
 
 import de.frauas.java.projectWS1920.Exceptions.NodeNotFoundException;
+import de.frauas.java.projectWS1920.Logger.Implementation.MyLogger;
 import de.frauas.java.projectWS1920.Threads.ShortestPathThread;
 
 import java.util.LinkedHashSet;
@@ -87,13 +88,24 @@ public class MyGraph {
     }
 
     /**
-     * If an input file is given the -b switch is used (regardless of whether -s switch is used)
+     * If an input file is given the -b switch is used
      * @param centralNode the node following the -b switch
      */
     public void initialiseAttributesBetweennessCentrality(MyNode centralNode) {
         initialiseAdjacentNodes();
         initialiseAllShortestPaths(true);
-        calculateDiameter();
+        calculateBetweennessCentralityOf(centralNode);
+    }
+
+    /**
+     * calculate all attributes for the output file.
+     */
+    public void initialiseAttributesOutputOption() {
+        initialiseAdjacentNodes();
+        initialiseAllShortestPaths(true);
+        for (MyNode node : getNodes()) {
+            calculateBetweennessCentralityOf(node);
+        }
     }
 
     private void initialiseAdjacentNodes() {
@@ -123,7 +135,6 @@ public class MyGraph {
         } catch (InterruptedException ex) {
             executor.shutdownNow();
             Thread.currentThread().interrupt();
-            // todo: log error information
         }
     }
 

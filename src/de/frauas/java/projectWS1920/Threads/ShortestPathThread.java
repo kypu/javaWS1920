@@ -9,18 +9,18 @@ public class ShortestPathThread implements Runnable{
 
     private MyGraph graph;
     private MyNode originNode;
-    private boolean centralityRequired;
+    private boolean isCentralityRequired;
 
-    public ShortestPathThread(MyGraph graph, MyNode originNode, boolean centralityRequired) {
+    public ShortestPathThread(MyGraph graph, MyNode originNode, boolean isCentralityRequired) {
         this.graph = graph;
         this.originNode = originNode;
-        this.centralityRequired = centralityRequired;
+        this.isCentralityRequired = isCentralityRequired;
     }
 
     @Override
     public void run() {
         calculateShortestPathsFrom(originNode);
-        if (centralityRequired) {
+        if (isCentralityRequired) {
             for (MyNode destinationNode : graph.getNodes()) {
                 originNode.calculateDirectionsTo(destinationNode);
             }

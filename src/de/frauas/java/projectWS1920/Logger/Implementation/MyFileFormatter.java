@@ -1,33 +1,42 @@
 package de.frauas.java.projectWS1920.Logger.Implementation;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
+import java.util.Formatter;
 import java.util.logging.LogRecord;
 
 public class MyFileFormatter extends AbstractMyFormatter {
 
+    /**
+     * Formats given LogRecord to our file output.
+     * Status, datetime and message are being logged.
+     * @param record Given LogRecord.
+     * @return Formatted LogRecord as String.
+     */
     @Override
     public String format(LogRecord record) {
-        String recordString = "";
+        StringBuilder recordBuilder = new StringBuilder();
         int recordIntValue = record.getLevel().intValue();
-        /*
-        return record.getThreadID()+"::"+record.getSourceClassName()+"::"
-                +record.getSourceMethodName()+"::"
-                +new Date(record.getMillis())+"::"
-                +record.getMessage()+"\n";
-         */
+
         switch(recordIntValue) {
-            case 0: //Level.SEVERE.intValue(): //SEVERE
-            case 1: //WARNING
-                //TODO
+            case 1000: //SEVERE
+            case 900: //WARNING
+                recordBuilder.append("CONSOLE LOG" + newLine);
                 break;
-            case 2: //INFO
-            case 3: //CONFIG
-                //TODO
+            case 800: //INFO
+            case 700: //CONFIG
+                recordBuilder.append("FILE LOG:" + newLine);
                 break;
-            default: //FINE, FINER, FINEST
-                //TODO
+            default: //FINE (600), FINER (500), FINEST (400)
+                recordBuilder.append("" + newLine);
         }
-        return recordString;
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
+        Date date = new Date(record.getMillis());
+        recordBuilder.append(dateFormat.format(date) + newLine);
+
+        recordBuilder.append(this.formatMessage(record) + newLine);
+
+        return recordBuilder.append(separator).toString();
     }
 }

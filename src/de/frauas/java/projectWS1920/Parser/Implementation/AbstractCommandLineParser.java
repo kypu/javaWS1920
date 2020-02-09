@@ -14,14 +14,7 @@ public abstract class AbstractCommandLineParser implements ICommandLineParser
 
     public abstract Options getOptions();
 
-    @Override
-    public void printHelp()
-    {
-        Options options = getOptions();
-
-        var formatter = new HelpFormatter();
-        formatter.printHelp(this.getClass().toString(), options, true);
-    }
+    public abstract void printHelp();
 
     @Override
     public String getOpenFilePath(String[] args) throws ValidationException
