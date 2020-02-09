@@ -37,7 +37,7 @@ public class CommandLineApplication {
             // If only file path was given as argument.
             if (argsSlice.length == 0) {
                 connectUI.logBasicGraphAttributes(filePath);
-                logger.logToConsoleAndFile(Resource.getLogoPicture());
+                logger.logToConsole(Resource.getLogoPicture());
                 System.exit(0);
             }
 
@@ -61,8 +61,8 @@ public class CommandLineApplication {
                 System.exit(0);
             }
         } catch (Exception ex) {
-            logger.logToConsoleAndFile("Program terminated due to invalid arguments.\r\n");
-            logger.logToFile(ex.getMessage());
+            logger.logToConsole("Program terminated due to invalid arguments.\r\n");
+            logger.logToConsole(ex.getMessage());
             operationParser.printHelp();
         } finally {
             System.exit(0);

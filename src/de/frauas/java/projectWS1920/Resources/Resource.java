@@ -1,10 +1,14 @@
 package de.frauas.java.projectWS1920.Resources;
 
+import de.frauas.java.projectWS1920.Application.Application;
 import org.apache.commons.io.FilenameUtils;
+
+import java.io.File;
 
 public class Resource
 {
-    private static final String filepath = "src\\de\\frauas\\java\\projectWS1920\\resources\\";
+    private static File mainFile = new File(Application.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+    private static final String filepath = mainFile + "\\src\\de\\frauas\\java\\projectWS1920\\resources\\";
 
     private static final String logoPicture =
         "          _..._\n" +

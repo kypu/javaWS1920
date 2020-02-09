@@ -25,17 +25,17 @@ public class ConnectUI {
             importedGraph.initialiseBasicGraphAttributes();
 
             //1.
-            logger.logToConsoleAndFile(createNumberOfNodesString(importedGraph));
+            logger.logToConsole(createNumberOfNodesString(importedGraph));
             //2.
-            logger.logToConsoleAndFile(createNumberOfEdgesString(importedGraph));
+            logger.logToConsole(createNumberOfEdgesString(importedGraph));
             //3.
-            logger.logToConsoleAndFile(createVertexIDString(importedGraph));
+            logger.logToConsole(createVertexIDString(importedGraph));
             //4.
-            logger.logToConsoleAndFile(createEdgesIDString(importedGraph));
+            logger.logToConsole(createEdgesIDString(importedGraph));
             //5.
-            logger.logToConsoleAndFile(createConnectedString(importedGraph));
+            logger.logToConsole(createConnectedString(importedGraph));
             //6.
-            logger.logToConsoleAndFile(createDiameterString(importedGraph));
+            logger.logToConsole(createDiameterString(importedGraph));
 
         } catch (Exception e) {
             throw e;
@@ -59,7 +59,7 @@ public class ConnectUI {
 
             stringBuilder.append("Betweenness centrality of " + centralNode.toString() + ": ");
             stringBuilder.append(betweennessCentralityString);
-            logger.logToConsoleAndFile(stringBuilder.toString());
+            logger.logToConsole(stringBuilder.toString());
         } catch (Exception e) {
             throw e;
         }
@@ -76,7 +76,7 @@ public class ConnectUI {
             var importedGraph = GraphML.importData(filePath);
             importedGraph.initialiseAttributesOutputOption();
             GraphML.exportData(outputFilePath, importedGraph);
-            logger.logToConsoleAndFile("Successfully created output file");
+            logger.logToConsole("Successfully created output file");
         } catch (Exception e) {
             throw e;
         }
@@ -112,7 +112,7 @@ public class ConnectUI {
                 stringBuilder.append("\r\nThe path is as follows: ");
                 stringBuilder.append(sourceNode.getDirectionsTo(destinationNode));
             }
-            logger.logToConsoleAndFile(stringBuilder.toString());
+            logger.logToConsole(stringBuilder.toString());
         } catch (Exception e) {
             throw e;
         }
