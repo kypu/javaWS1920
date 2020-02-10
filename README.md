@@ -12,7 +12,7 @@ commons-cli:commons-cli:1.4 (for command line arguments)
 
 Add program arguments to local intellij configuration:
 
-src/de/frauas/java/projectWS1920/resources/small_graph.graphml -a DeineMudda (for mac)
+src/de/frauas/java/projectWS1920/resources/small_graph.graphml -a testOutput (for mac)
 (replace each "/" with two "\\" for windows)
 
 (Edit Configurations > Application > (your configuration name) > Program arguments)
